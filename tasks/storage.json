@@ -1,0 +1,17 @@
+{
+  "args": {
+    "targets": [
+      "chrome-mv3",
+      "edge-mv3",
+      "opera-mv3",
+      "firefox-mv2",
+      "thunderbird"
+    ],
+    "isWatch": false,
+    "isRelease": true,
+    "isDebug": false,
+    "isTest": false,
+    "logInfo": true,
+    "logWarn": false
+  }
+}

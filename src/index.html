@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset=utf-8>
+  <link href="style.css" rel="stylesheet">
+  <title>Volume Booster</title>
+</head>
+<body>
+
+  <div class="top-label">
+    <div class="manu">
+      <div class="icon">
+        <img src="../icons/64.png">
+        <span class="name">Volume Booster</span>
+      </div>
+      <div id="header-icons" title="Support">
+        <a target="_blank" href="#">
+          <img class="material-icons" src="../icons/help.svg"></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="box">
+      <button class="popupbtn">
+        <img src="../icons/window.svg">
+        <span data-message="popup"></span>
+      </button>
+      
+
+      <button class="resetbtn">
+        <img src="../icons/reset.svg">
+        <span data-message="reset"></span>
+      </button>
+
+      <div class="tooglewin">
+        <input class="type-checkbox" id="toogle" type="checkbox" name="name">
+        <label class="estado" for="toogle">
+          <span class="aprobado" data-message="light"></span>
+          <span class="desaprobado" data-message="dark"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="des">
+      <span data-message="app_description"></span>
+    </div>
+
+    <div class="controlls">
+      <div class="speaker">
+        <svg viewBox="0 0 100 77" xmlns="http://www.w3.org/2000/svg">
+          <path id="speakB" class="volElem" stroke="#4b92b9" d="M51.2,18.5v-13c0-2.1-2.5-3.3-4.1-1.9L21.8,25.9c-1.4,1.2-3.1,1.9-4.9,1.9H8.2c-2.3,0-4.2,1.9-4.2,4.2v13.3c0,2.3,1.9,4.2,4.2,4.2H17c1.9,0,3.7,0.7,5.1,1.9l25,22c1.6,1.4,4.1,0.3,4.1-1.9v-13" opacity="0.4" />
+          <path id="speakF" class="volElem" stroke="#4b92b9" d="M51.2,18.5v-13c0-2.1-2.5-3.3-4.1-1.9L21.8,25.9c-1.4,1.2-3.1,1.9-4.9,1.9H8.2c-2.3,0-4.2,1.9-4.2,4.2v13.3c0,2.3,1.9,4.2,4.2,4.2H17c1.9,0,3.7,0.7,5.1,1.9l25,22c1.6,1.4,4.1,0.3,4.1-1.9v-13" />
+          <path id="arcBigB" class="volElem" stroke="#4b92b9" d="M72.2,64.1C81.1,59,87,49.4,87,38.5c0-10.9-5.9-20.5-14.8-25.6" opacity="0.4" />
+          <path id="arcBigF" class="volElem" stroke="#4b92b9" d="M72.2,64.1C81.1,59,87,49.4,87,38.5c0-10.9-5.9-20.5-14.8-25.6" />
+          <path id="arcSmB" class="volElem" stroke="#4b92b9" d="M59,51.3c4.4-2.6,7.4-7.4,7.4-12.8s-3-10.3-7.4-12.8" opacity="0.4" />
+          <path id="arcSmF" class="volElem" stroke="#4b92b9" d="M59,51.3c4.4-2.6,7.4-7.4,7.4-12.8s-3-10.3-7.4-12.8" />
+          <line id="crossLtRb" class="volElem" opacity="0.6" stroke="#20a2ed" x1="43.8" y1="29.2" x2="62.6" y2="47.8" transform="scale(0)" />
+          <line id="crossLbRt" class="volElem" opacity="0.6" stroke="#20a2ed" x1="62.6" y1="29.2" x2="43.8" y2="47.8" transform="scale(0)" />
+        </svg>
+      </div>
+
+      <section class="slider">
+        <input class="volume-slider" type="range" autofocus data-default-volume="100" data-min-volume="0" data-max-volume="600">
+      </section>
+    </div>
+
+    <section class="info">
+      <span class="volume-min">0 %</span>
+      <span class="volume-current">
+        <span class="volume-name" data-message="volume"></span><span>: </span> <span class="volume-current-value">100</span> %</span>
+      <span class="volume-max"><span class="volume-max-value">600</span> %</span>
+    </section>
+
+    <section class="volume-info"></section>
+    <section class="tabs">
+      <div class="tabs__title"></div>
+      <div class="tabs__list"></div>
+    </section>
+
+    <template id="template-tab">
+      <a href='#' class="tab tab_w">
+        <div class="tab__item tabs__list_display tab__icon">
+          <img class="tab__icon-image" />
+        </div>
+        <div class="tab__item tabs__list_display tab__title"></div>
+      </a>
+    </template>
+
+    <template id="template-tab2">
+      <a href='#' class="tab tab_w2">
+        <div class="tab__item2 tab__icon">
+          <img class="tab__icon-image" />
+        </div>
+        <div class="tab__item2 tab__title"></div>
+      </a>
+    </template>
+
+
+
+    <div class="noti-block" data-message="notice">
+    </div>
+
+    <div class="stars">
+      <span class="star" data-action="support"></span>
+      <span class="star" data-action="support"></span>
+      <span class="star" data-action="review"></span>
+      <span class="star" data-action="review"></span>
+      <span class="star" data-action="review"></span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-text">Sound Booster v.1.0.2</div>
+    <div class="footer-fb">
+      <svg width="20px" height="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve"><g><g><path fill="#333" d="M325.581,111.282h46.654c9.995,0,18.128-8.132,18.128-18.128V18.187c0-9.996-8.132-18.128-18.128-18.128H308.17
+          C307.556,0.033,306.489,0,304.994,0c-12.088,0-54.123,2.385-87.472,33.064c-36.401,33.493-32.918,73.557-31.386,83.435v48.84
+          h-46.371c-9.995,0-18.128,8.132-18.128,18.128v80.629c0,9.997,8.132,18.13,18.128,18.13h43.688v211.647
+          c0,9.995,8.132,18.128,18.128,18.128h91.368c9.995,0,18.128-8.133,18.128-18.128V283.271h51.749
+          c9.214,0,16.956-6.903,18.009-16.056l9.409-81.672c0.591-5.131-1.04-10.285-4.477-14.14c-3.437-3.853-8.368-6.063-13.53-6.063
+          h-61.156v-40.997C311.079,115.872,313.39,111.282,325.581,111.282z M300.881,185.739h68.807l-8.886,77.134h-59.924
+          c-5.632,0-10.199,4.566-10.199,10.199v218.53H203.85V272.026c0-5.633-4.567-10.199-10.199-10.199h-51.617v-76.09h54.301
+          c5.632,0,10.199-4.566,10.199-10.199V115.67c0-0.585-0.05-1.17-0.15-1.747c-1.075-6.175-4.918-38.365,24.95-65.847
+          c27.915-25.681,63.439-27.677,73.661-27.677c1.433,0,2.286,0.038,2.442,0.046c0.168,0.008,0.336,0.012,0.504,0.012h62.026v70.428
+          h-44.385c-21.854,0-34.901,12.508-34.901,33.458v51.196C290.681,181.173,295.249,185.739,300.881,185.739z"/></g></g><g><g><path fill="#333" d="M224.382,343.713c-5.632,0-10.199,4.566-10.199,10.199v5.1c0,5.633,4.567,10.199,10.199,10.199
+          c5.632,0,10.199-4.566,10.199-10.199v-5.1C234.581,348.279,230.013,343.713,224.382,343.713z"/></g></g><g><g><path fill="#333" d="M224.382,381.45c-5.632,0-10.199,4.566-10.199,10.199v77.514c0,5.633,4.567,10.199,10.199,10.199
+          c5.632,0,10.199-4.566,10.199-10.199v-77.514C234.581,386.016,230.013,381.45,224.382,381.45z"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+    </div>
+    <div class="footer-yt">
+        <svg width="20px" height="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 49 49" style="enable-background:new 0 0 49 49" xml:space="preserve"><g><g><path fill="#333" d="M39.256,6.5H9.744C4.371,6.5,0,10.885,0,16.274v16.451c0,5.39,4.371,9.774,9.744,9.774h29.512
+      c5.373,0,9.744-4.385,9.744-9.774V16.274C49,10.885,44.629,6.5,39.256,6.5z M47,32.726c0,4.287-3.474,7.774-7.744,7.774H9.744
+      C5.474,40.5,2,37.012,2,32.726V16.274C2,11.988,5.474,8.5,9.744,8.5h29.512c4.27,0,7.744,3.488,7.744,7.774V32.726z"/><path d="M33.36,24.138l-13.855-8.115c-0.308-0.18-0.691-0.183-1.002-0.005S18,16.527,18,16.886v16.229
+      c0,0.358,0.192,0.69,0.502,0.868c0.154,0.088,0.326,0.132,0.498,0.132c0.175,0,0.349-0.046,0.505-0.137l13.855-8.113
+      c0.306-0.179,0.495-0.508,0.495-0.863S33.667,24.317,33.36,24.138z M20,31.37V18.63l10.876,6.371L20,31.37z"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+    </div>
+    <div class="footer-web">
+
+        <svg width="20px" height="20px" viewBox="-0.5 0 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="si-glyph si-glyph-network-2"><title></title><defs></defs><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(1.000000, 1.000000)" fill="#434343"><path d="M7.494,14.958 C3.361,14.958 0,11.622 0,7.52 C0,3.418 3.361,0.082 7.494,0.082 C11.627,0.082 14.989,3.418 14.989,7.52 C14.989,11.622 11.627,14.958 7.494,14.958 L7.494,14.958 Z M7.51,0.938 C3.887,0.938 0.938,3.886 0.938,7.51 C0.938,11.135 3.887,14.083 7.51,14.083 C11.135,14.083 14.083,11.135 14.083,7.51 C14.083,3.886 11.135,0.938 7.51,0.938 L7.51,0.938 Z" class="si-glyph-fill"></path><rect x="7" y="1" width="0.922" height="14.084" class="si-glyph-fill"></rect><rect x="0" y="7" width="13.96" height="0.922" class="si-glyph-fill"></rect><rect x="1" y="4" width="12.406" height="0.906" class="si-glyph-fill"></rect><rect x="1" y="10" width="12.406" height="0.922" class="si-glyph-fill"></rect><path d="M7.317,14.854 C4.72,13.581 3.043,10.662 3.043,7.417 C3.043,4.247 4.666,1.355 7.181,0.05 L7.642,0.937 C5.455,2.074 4.043,4.617 4.043,7.417 C4.043,10.282 5.502,12.849 7.757,13.955 L7.317,14.854 L7.317,14.854 Z" class="si-glyph-fill"></path><path d="M7.74,14.789 L7.271,13.906 C9.41,12.772 10.792,10.225 10.792,7.417 C10.792,4.642 9.433,2.107 7.332,0.96 L7.811,0.083 C10.229,1.401 11.792,4.28 11.792,7.417 C11.793,10.592 10.201,13.485 7.74,14.789 L7.74,14.789 Z" class="si-glyph-fill"></path></g></g></svg>
+    </div>
+  </div>
+  <script src="service.js"></script>
+  <script src="index.js"></script>
+</body>
+
+</html>
