@@ -7,11 +7,11 @@
       "firefox-mv2",
       "thunderbird"
     ],
-    "isWatch": false,
+    "isWatch": true,
     "isRelease": true,
     "isDebug": false,
     "isTest": false,
-    "logInfo": true,
+    "logInfo": false,
     "logWarn": false
   }
 }

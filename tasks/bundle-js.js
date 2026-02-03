@@ -1,11 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
 import * as esbuild from 'esbuild';
 import {log} from './utils.js';
-import {localstorage} from './storage.js';
 
-const storage = localstorage.get('args');
 
 // remove source comment
 function removeTopSourceComment(filePath) {
@@ -14,50 +11,14 @@ function removeTopSourceComment(filePath) {
     fs.writeFileSync(filePath, code);
 }
 
-async function loadConfiguration({ target, mode }) {
-    log.ok('Loading configuration...');
 
-    const config = {
-        entry: {
-            'data/interface': ['src/ts/index.ts','src/ts/service.ts']
-        },
-        filename: '[name].js',
-        target: 'es2020',
-        minify: false,
-        sourcemap: false,
-        define: {
-            __DEV__: 'false'
-        }
-    };
+async function bundleCSSEntry(entry) {
 
-    const targetConfigPath = path.resolve(`config/${target}.js`);
-
-    if (fs.existsSync(targetConfigPath)) {
-        const targetConfig = await import(
-            pathToFileURL(targetConfigPath).href
-        );
-        Object.assign(config, targetConfig.default ?? targetConfig);
-    }
-
-    log.ok('Configuration loaded');
-
-    return config;
 }
-
-export const bundleJS = async({env, target})=> {
-    const config = await loadConfiguration({
-        target,
-        mode: env.mode
-    });
-
-    log.ok(`📦 Building → ${target}`);
-    log.ok('Minify    : ' + config.minify);
-    log.ok('Sourcemap : ' + config.sourcemap);
-
+export const bundleJS = async(config, env, target)=> {
     var result, outputs;
 
     for (const [key, item] of Object.entries(config.entry)) {
-        log.ok(`Folder Create: ${key}`);
         result = await esbuild.build({
             entryPoints: item,
             bundle: true,
@@ -75,13 +36,13 @@ export const bundleJS = async({env, target})=> {
             },
 
             minify: config.minify,
-            drop: (storage.isRelease ? storage.isRelease : false) ? ['console', 'debugger'] : [],
+            drop: env.mode == 'production' ? ['console', 'debugger'] : [],
             sourcemap: config.sourcemap,
             metafile: true,
             write: true
         });
 
-        if (!(storage.isRelease ? storage.isRelease : false)) return;
+        if (!env.mode == 'production') return;
         outputs  = Object.keys(result.metafile.outputs);
         for (const file of outputs) {
             if (file.endsWith('.js')) {
@@ -90,5 +51,4 @@ export const bundleJS = async({env, target})=> {
         }
     }
 
-    log.ok(`✅ ${target} build completed`);
 }

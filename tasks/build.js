@@ -1,27 +1,24 @@
 import process from 'node:process';
+import createFolder from './folder.js';
+import bundleCSS from './bundle-css.js';
+
+
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import {localstorage} from './storage.js';
-import {bundleJS} from './bundle-js.js';
-import {log} from './utils.js';
 
+// import {bundleJS} from './bundle-js.js';
+
+import {log} from './utils.js';
+import {runTasks} from './task.js';
 
 const args = process.argv.slice(2);
-
-const isWatch = args.includes('--watch');
-const isRelease = args.includes('--release');
-const isDebug = args.includes('--debug');
-const isTest = args.includes('--test');
-
-const logInfo = args.includes('--log-info');
-const logWarn = args.includes('--log-warn');
 
 // -----------------------------
 // Detect target platform
 // -----------------------------
 
-const ALL_TARGETS = [
+const platforms = [
     'chrome-mv3',
     'edge-mv3',
     'opera-mv3',
@@ -29,78 +26,85 @@ const ALL_TARGETS = [
     'thunderbird'
 ];
 
-let targets = [];
+let platform = [];
 
 if (args.includes('--all')) {
-    targets = ALL_TARGETS;
+    platform = platforms;
 } else {
-    if (args.includes('--chrome-mv2')) targets.push('chrome-mv2');
-    if (args.includes('--chrome-mv3')) targets.push('chrome-mv3');
-    if (args.includes('--firefox')) targets.push('firefox');
-    if (args.includes('--thunderbird')) targets.push('thunderbird');
+    if (args.includes('--chrome-mv3')) platform.push('chrome-mv3');
+    if (args.includes('--edge-mv3')) platform.push('edge-mv3');
+    if (args.includes('--firefox-mv2')) platform.push('firefox-mv2');
+    if (args.includes('--opera-mv3')) platform.push('opera-mv3');
+    if (args.includes('--thunderbird')) platform.push('thunderbird');
 }
 
-localstorage.set("args", {
-   "targets": targets,
-   "isWatch": isWatch,
-   "isRelease": isRelease,
-   "isDebug": isDebug,
-   "isTest": isTest,
-   "logInfo": logInfo,
-   "logWarn": logWarn
-});
 
-
-function prepareEnvironment({ mode, target }) {
-    log.ok('Preparing environment...');
-
-    process.env.NODE_ENV = mode === 'release'
-        ? 'production'
-        : 'development';
-
-    const distDir = path.resolve(`build/${mode == 'release' ? 'release' : 'debug'}` , target);
-
-    if (!fs.existsSync(distDir)) {
-        fs.mkdirSync(distDir, { recursive: true });
-    }
-
-    for (const file of fs.readdirSync(distDir)) {
-        fs.rmSync(path.join(distDir, file), { recursive: true, force: true });
-    }
-
-    log.ok('Environment ready');
-
-    return {
-        distDir,
-        mode: process.env.NODE_ENV
-    };
+const settings = {
+    platforms: platform,
+    isWatch: args.includes('--watch'),
+    isRelease: args.includes('--release'),
+    isDebug: args.includes('--debug'),
+    isTest: args.includes('--test'),
+    logInfo: args.includes('--log-info'),
+    logWarn: args.includes('--log-warn')
 }
 
-async function runBuild(target) {
-    const env = prepareEnvironment({
-        mode: isRelease ? 'release' : 'dev',
-        target
-    });
-
-    bundleJS({env, target});
-}
+const standardTask = [
+    createFolder,
+    bundleCSS
+];
 
 async function build() {
     log.ok('--------------------------------');
     log.ok('🚀 Build started');
-
-    for (const target of targets) {
-        await runBuild(target);
+    try {
+        await runTasks(standardTask, settings);
+        if (settings.isWatch) {
+            standardTask.forEach((task) => task.watch(settings.platforms));
+            log.ok('✔ Watching...');
+        } else {
+            log.ok('MISSION PASSED! RESPECT +');
+        }
+    }catch (err) {
+        console.log(err);
+        log.error(`MISSION FAILED!`);
+        process.exit(13);
     }
 }
 
-if (isWatch) {
-    console.log('👀 Watch mode enabled');
-    fs.watch(path.resolve('./src'), { recursive: true }, async () => {
-        console.log('🔄 File changed — rebuilding...');
-        await build();
-    });
-} else {
-    build();
-}
+build();
+
+// if (isWatch) {
+//     console.log('👀 Watch mode enabled');
+//     fs.watch(path.resolve('./src'), { recursive: true }, async () => {
+//         console.log('🔄 File changed — rebuilding...');
+//         // await build();
+//     });
+// } else {
+//     build();
+// }
+
+
+
+// async function runBuild(target) {
+//     const env = prepareEnvironment({
+//         mode: isRelease ? 'release' : 'dev',
+//         target
+//     });
+
+//     const config = await loadConfiguration({
+//         target,
+//         mode: env.mode
+//     });
+
+//     bundleJS(config["esbuild"], env, target);
+//     // bundleCSS(config["less"], env, target);
+
+// }
+
+
+
+
+
+
 
