@@ -26,18 +26,18 @@ class Task {
         );
     }
 
-    watch(platforms) {
+    async watch(platforms, isDebug) {
         if (!this._watchFiles || !this._onChange) {
             return;
         }
 
         const watcher = watch({
             files: typeof this._watchFiles === 'function' ?
-                this._watchFiles() :
+                await this._watchFiles() :
                 this._watchFiles,
             onChange: async (files) => {
                 await this._measureTime(
-                    () => this._onChange(files, watcher, platforms)
+                    () => this._onChange(files, watcher, platforms, isDebug)
                 );
             },
         });

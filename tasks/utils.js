@@ -1,14 +1,7 @@
-import {exec} from 'node:child_process';
-import {accessSync, existsSync} from 'node:fs';
+import {accessSync, existsSync, readdirSync, statSync} from 'node:fs';
 import fs from 'node:fs/promises';
-import https from 'node:https';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-
-
-// -----------------------------
-// Logging
-// -----------------------------
 
 const colors = Object.entries({
     gray: '\x1b[90m',
@@ -34,7 +27,7 @@ export const log = Object.assign((text) => logWithTime(text), {
 
 export async function pathExists(dest) {
     try {
-        await fs.access(dest);
+        accessSync(dest);
         return true;
     } catch (err) {
         return false;
@@ -57,37 +50,47 @@ export async function writeFile(dest, content, encoding = 'utf8') {
     await fs.writeFile(dest, content, encoding);
 }
 
+export async function readJSON(path) {
+    const file = await readFile(path);
+    return JSON.parse(file);
+}
+
+export async function writeJSON(dest, content, space = 4) {
+    const string = JSON.stringify(content, null, space);
+    return await writeFile(dest, string);
+}
 
 export async function getConfig(platform) {
-    const config = {
-        "esbuild": {
-            entry: {
-                '/': ['src/ts/example.ts']
-            },
-            filename: '[name].js',
-            target: 'es2020',
-            minify: false,
-            sourcemap: false,
-            define: {
-                __DEV__: 'false'
-            }
-        },
-        "less":{
-            entry: {
-                'src/less/example.less': 'example.css',
-            },
-            compress: true,
-        }
-    };
-
+    const config = {};
     const targetConfigPath = path.resolve(`config/${platform}.js`);
-
     if (existsSync(targetConfigPath)) {
         const targetConfig = await import(
             pathToFileURL(targetConfigPath).href
         );
         Object.assign(config, targetConfig.default ?? targetConfig);
     }
-
     return config;
+}
+
+export async function getAllFiles(folderPath){
+  const dir = path.resolve(folderPath)
+  let results = [];
+
+  const list = readdirSync(dir);
+  for (const file of list) {
+    const fullPath = path.join(dir, file);
+    const stat = statSync(fullPath);
+
+    if (stat.isDirectory()) {
+      results = results.concat(getAllFiles(fullPath));
+    } else {
+      results.push(fullPath);
+    }
+  }
+  return results;
+}
+
+export async function copyFile(src, dest) {
+    await mkDirIfMissing(dest);
+    await fs.copyFile(src, dest);
 }

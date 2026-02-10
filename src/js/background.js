@@ -20,7 +20,7 @@
 */
 
 importScripts("lib/config.js");
-importScripts("lib/chrome.js");//Home: https://github.com/code-hemu/volume-booster
+importScripts("lib/chrome.js");
 importScripts("lib/runtime.js");
 importScripts("lib/common.js");
 

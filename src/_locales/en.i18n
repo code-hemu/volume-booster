@@ -1,0 +1,29 @@
+@app_description
+Unleash the power of sound on your browser! Increase volume to max level and control the it of any tab.
+
+@app_name
+Volume Booster - Increase sound
+
+@active_tabs
+Active tabs playing audio:
+
+@deactive_tabs
+There are no tabs with audio right now.
+
+@popup
+popup
+
+@reset
+reset
+
+@light
+light
+
+@dark
+dark
+
+@volume
+Volume
+
+@notice
+Please keep this window open to boost your sound. This is due to privacy requirement by the browser.

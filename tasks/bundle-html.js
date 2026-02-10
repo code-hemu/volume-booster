@@ -1,22 +1,21 @@
 import path from 'node:path';
 import { build } from 'esbuild';
+import { htmlPlugin } from '@craftamap/esbuild-plugin-html';
 import {getDestDir, absolutePath} from './paths.js';
 import {readFile, writeFile, getConfig, getAllFiles, log} from './utils.js';
 import {createTask} from './task.js';
 
-const srcJSDir = 'src/js';
+const srcHTMLDir = 'src/html';
 
 async function removeTopSourceComment(filePath) {
     let code = await readFile(filePath, 'utf8');
-    code = code.replace(/^\/\/.*\n/, '');
+    code = code.replace(/^\s*<!--[\s\S]*?-->\s*/, '');
     await writeFile(filePath, code);
 }
 
 function fileExistsInConfig(config, absoluteFilePath) {
     const normalizedTarget = path.normalize(absoluteFilePath);
-
     for (const [dest, src] of Object.entries(config)) {
-        
         for (const file of src) {
             const relativePath = absolutePath(file);
             if (path.normalize(relativePath) == normalizedTarget){
@@ -27,7 +26,7 @@ function fileExistsInConfig(config, absoluteFilePath) {
     return false;
 }
 
-async function esbuildJS(config, isDebug, platform){
+async function esbuildHTML(config, isDebug, platform){
     let buildResult, outputs;
     const dir = getDestDir({isDebug, platform});
     for (const [dest, src] of Object.entries(config.entry)) {
@@ -35,17 +34,13 @@ async function esbuildJS(config, isDebug, platform){
             entryPoints: src,
             bundle: true,
             outdir: path.join(dir, dest),
-            entryNames: config.filename,
-            platform: 'browser',
-            format: 'esm',
-            target: 'es2020',
+            plugins: [htmlPlugin()],
             loader: {
-                '.ts': 'ts',
-                '.js': 'js'
+                '.html': 'file'   // 🔥 Important
             },
-            minify: isDebug? false : config.minify,
-            sourcemap: isDebug? true :config.sourcemap,
-            drop: !isDebug ? ['console', 'debugger'] : [],
+            entryNames: config.filename,
+            assetNames: config.filename,
+            chunkNames: config.filename,
             metafile: true,
             write: true
         });
@@ -53,7 +48,7 @@ async function esbuildJS(config, isDebug, platform){
         if (!isDebug) {
             outputs = Object.keys(buildResult.metafile.outputs);
             for (const file of outputs) {
-                if (file.endsWith('.js')) {
+                if (file.endsWith('.html')) {
                     removeTopSourceComment(file);
                 }
             }
@@ -62,15 +57,15 @@ async function esbuildJS(config, isDebug, platform){
 
 }
 
-export function createBundleJSTask(srcJSDir){
-    const bundleJS = async ({platforms, isDebug, logInfo}) => {
+export function createBundleHTMLTask(srcHTMLDir){
+    const bundleHTML = async ({platforms, isDebug, logInfo, logWarn}) => {
         for(const platform of platforms){
             const config = await getConfig(platform);
-            if (config.js) {
-                if (logInfo) log.info(`Bundling JS for ${platform}...`);
-                await esbuildJS(config.js, isDebug, platform);
-            } else {
-                if(logInfo) log.warn(`No JS config found for ${platform}, skipping JS bundling.`);
+            if(config.html){
+                await esbuildHTML(config.html, isDebug, platform);
+                if (logInfo) log.info(`Bundling HTML for ${platform}...`);
+            } else{
+                if(logWarn) log.warn(`No HTML config found for ${platform}, skipping HTML bundling.`);
             }
         }
     }
@@ -78,24 +73,25 @@ export function createBundleJSTask(srcJSDir){
     const onChange = async (changedFiles, watcher, platforms, isDebug) => {
         for(const platform of platforms){
             let config = await getConfig(platform);
-            if (!config.js) continue; // Skip if no JS config for this platform
+            if (!config.html) continue; // Skip if no HTML config for this platform
             const exists = fileExistsInConfig(
-                config.js.entry,
+                config.html.entry,
                 changedFiles[0]
             );
             if (exists){
-                config.js.entry = exists;
-                await esbuildJS(config.js, isDebug, platform);
+                config.html.entry = exists;
+                await esbuildHTML(config.html, isDebug, platform);
             }
         }
     }
     return createTask(
-        'bundle JS',
-        bundleJS,
+        'bundle HTML',
+        bundleHTML,
     ).addWatcher(
       async () => {
-        const currentWatchFiles = await getAllFiles(srcJSDir);
+        const currentWatchFiles = await getAllFiles(srcHTMLDir);
         return currentWatchFiles;
     }, onChange);
 }
-export default createBundleJSTask(srcJSDir);
+
+export default createBundleHTMLTask(srcHTMLDir);

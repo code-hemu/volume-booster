@@ -1,0 +1,31 @@
+{
+   "action": {
+      "default_icon": {
+         "32": "data/icons/32.png",
+         "48": "data/icons/48.png",
+         "64": "data/icons/64.png"
+      },
+      "default_popup": "data/interface/index.html?pop",
+      "default_title": "__MSG_app_name__"
+   },
+   "background": {
+      "service_worker": "background.js"
+   },
+   "description": "__MSG_app_description__",
+   "icons": {
+      "128": "data/icons/128.png",
+      "32": "data/icons/32.png",
+      "48": "data/icons/48.png",
+      "64": "data/icons/64.png"
+   },
+   "host_permissions": ["<all_urls>"],
+   "default_locale": "en",
+   "manifest_version": 3,
+   "name": "__MSG_app_name__",
+   "permissions": [
+        "tabs",
+        "tabCapture",
+        "storage"],
+   "short_name": "volume",
+   "version": "1.2.1"
+}

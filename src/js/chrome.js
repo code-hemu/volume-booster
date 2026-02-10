@@ -6,7 +6,7 @@ var core = {
         core.load();
     },
     "load": function() {
-        app.interface.id = '';
+        app.interface.id = '0';
     },
     "open": function(e) {
         app.tab.open(e.url);

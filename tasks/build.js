@@ -1,22 +1,17 @@
 import process from 'node:process';
 import createFolder from './folder.js';
 import bundleCSS from './bundle-css.js';
+import bundleJS from './bundle-js.js';
+import bundleHTML from './bundle-html.js';
+import bundleLocales from './bundle-locales.js';
+import bundleManifest from './bundle-manifest.js';
+import assetsCopy from './copy.js';
 
-
-import fs from 'node:fs';
-import path from 'node:path';
-import { pathToFileURL } from 'node:url';
-
-// import {bundleJS} from './bundle-js.js';
 
 import {log} from './utils.js';
 import {runTasks} from './task.js';
 
 const args = process.argv.slice(2);
-
-// -----------------------------
-// Detect target platform
-// -----------------------------
 
 const platforms = [
     'chrome-mv3',
@@ -51,7 +46,12 @@ const settings = {
 
 const standardTask = [
     createFolder,
-    bundleCSS
+    bundleCSS,
+    bundleJS,
+    bundleHTML,
+    bundleLocales,
+    bundleManifest,
+    assetsCopy
 ];
 
 async function build() {
@@ -60,7 +60,7 @@ async function build() {
     try {
         await runTasks(standardTask, settings);
         if (settings.isWatch) {
-            standardTask.forEach((task) => task.watch(settings.platforms));
+            standardTask.forEach((task) => task.watch(settings.platforms, settings.isDebug));
             log.ok('✔ Watching...');
         } else {
             log.ok('MISSION PASSED! RESPECT +');
