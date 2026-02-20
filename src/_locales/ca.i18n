@@ -1,0 +1,23 @@
+@app_description
+Desfer el poder del so al navegador.Augmenteu el volum al nivell màxim i controleu la pestanya.
+
+@app_name
+Volume Booster - Augmentar el so
+
+@active_tabs
+Pestanyes actives reproduint àudio:
+
+@deactive_tabs
+Ara mateix no hi ha pestanyes amb àudio
+
+@light
+llum
+
+@dark
+fosc
+
+@volume
+Volum
+
+@notice
+Mantingueu aquesta finestra oberta per augmentar el so.Això es deu al requisit de privadesa del navegador.

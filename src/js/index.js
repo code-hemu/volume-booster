@@ -1,614 +1,406 @@
+/*******************************************************************************
+ * 
+    Volume Booster - Increase sound
+    Copyright (C) 2020-present Hemanta gayen
 
-// var config = {
-//   "id" : function() {
-//     const urlParams = new URLSearchParams(window.location.search);
-//     return urlParams ? urlParams.get("tabId") ? urlParams.get("tabId") :null :null;
-//   },
-//   "set":{
-//     "anim": (e)=>{
-//       drag ? drag.curCx != undefined ? (drag.curCx = e, drag.animateDrag()) : null : null;
-//     },
-//     "volume": (e)=>{
-//       $(".volume-slider").value = parseInt(e * 100 /600);
-//       $(".volume-current-value").innerText = e;
-//       config.set.anim(e);
-//     },
-//     "link": ()=>{
-//       $(".footer-text").innerText = `${API.runtime.getManifest().name} v.${API.runtime.getManifest().version}.0`
-//       $("#header-icons a") ? $("#header-icons a").href = `${homepage}2022/09/speaker-booster.html#CSS3` : '';
-//       $(".footer-fb").addEventListener("click", function () {background.send("open", {"url": 'https://www.facebook.com/codehemu/'})});
-//       $(".footer-yt").addEventListener("click", function () {background.send("open", {"url": 'https://www.youtube.com/@CodeHemu'})});
-//       $(".footer-web").addEventListener("click", function () {background.send("open", {"url": `${homepage}2022/09/speaker-booster.html`})});
-//     },
-//     "rate": ()=>{
-//       $(".star").forEach((event)=>{
-//         event.addEventListener("click",(target)=>{
-//           const atr = target.currentTarget.getAttribute("data-action");
-//           atr == 'support' ? 
-//           background.send("open", {"url":  `${homepage}p/reporting.html?app=${API.runtime.getManifest().name}&version=${API.runtime.getManifest().version}`}) :
-//           atr == 'review' ? 
-//           background.send("open", {"url":  `https://chromewebstore.google.com/detail/${API.runtime.id}/reviews`}) : '';
-//         });
-//       });
-//     },
-//     "mode": async()=>{
-//       responseOptions = await config.storage();
-//       $("#toogle").checked = responseOptions.darkMode;
-//       config.mode(responseOptions.darkMode);
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-//       $("#toogle").addEventListener("click",async (event)=> {
-//         const darkMode = event.currentTarget.checked;
-//         await API.storage.local.set({darkMode});
-//         config.mode(darkMode)
-//       });
-//     },
-//     "list": async()=> {
-//       let allTab = document.querySelectorAll("a.tab");
-//       if (allTab) {
-//         for(element of allTab){
-//           const parentElement = element.parentNode; 
-//           // Remove the child element from the parent
-//           parentElement.removeChild(element); 
-//         }
-//       }
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-//       const active_tab = await config.get.list();
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see {http://www.gnu.org/licenses/}.
 
-//       if (active_tab) {
-//         const active_text = API.i18n.getMessage('active_tabs');
-//         const deactive_text = API.i18n.getMessage('deactive_tabs');
-//         $(".tabs__title").textContent = config.id() == null ? 0 < active_tab.length ? active_text : deactive_text : deactive_text;
-//         active_tab.forEach(tab => {
-//             const ele = (config.id()!=null ? $("#template-tab"): active_tab.length > 2 ? $("#template-tab2") : $("#template-tab")).content;
-//             ele.querySelector(".tab").dataset.tabId = tab.id;
-//             ele.querySelector(".tab__icon-image").src = tab.favIconUrl;
-//             ele.querySelector(".tab__title").textContent = tab.title;
-//             config.id()==null? $(".tabs__list").appendChild(document.importNode(ele, true)) :
-//             config.id() == tab.id ? 
-//             ($(".tabs__list").appendChild(document.importNode(ele, true)),
-//               $(".tabs__title").textContent = active_text,
-//               $("title")[0].textContent = tab.title) : null;
-//           });
+    Home: https://github.com/code-hemu/volume-booster
+*/
+var background = {
+  "port": null,
+  "message": {},
+  "receive": function (id, callback) {
+    if (id) {
+      background.message[id] = callback;
+    }
+  },
+  "send": function (id, data) {
+    if (id) {
+      API.runtime.sendMessage({
+        "method": id,
+        "data": data,
+        "path": "popup-to-background"
+      }, function () {
+        return API.runtime.lastError;
+      });
+    }
+  },
+  "connect": function (port) {
+    API.runtime.onMessage.addListener(background.listener); 
+    if (port) {
+      background.port = port;
+      background.port.onMessage.addListener(background.listener);
+      background.port.onDisconnect.addListener(function () {
+        background.port = null;
+      });
+    }
+  },
+  "post": function (id, data) {
+    if (id) {
+      if (background.port) {
+        background.port.postMessage({
+          "method": id,
+          "data": data,
+          "path": "popup-to-background",
+          "port": background.port.name
+        });
+      }
+    }
+  },
+  "listener": function (e) {
+    if (e) {
+      for (let id in background.message) {
+        if (background.message[id]) {
+          if ((typeof background.message[id]) === "function") {
+            if (e.path === "background-to-popup") {
+              if (e.method === id) {
+                background.message[id](e.data);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+};
 
-//           if (2 < active_tab.length && config.id()== null) {
-//             if (!$(".tabs__list").classList.contains('tabs__grid')){
-//               $(".tabs__list").classList.add('tabs__grid')
-//             }
-//           }else{
-//             if ($(".tabs__list").classList.contains('tabs__grid')){
-//               $(".tabs__list").classList.remove('tabs__grid')
-//             }
-//           }
-//       }
-//     },
-//     "button": function(e){
-//       if (e==0) {
-//         $(".popupbtn").disabled = true;
-//         $(".popupbtn").style.background = "#fc6060";
-//         $(".popupbtn").style.cursor = "no-drop";
-//         $(".popupbtn img").src = "../icons/window.svg";
-//       }else if (e==1) {
-//         $(".popupbtn").disabled = false;
-//         $(".popupbtn").style.background = "var(--btn-color)";
-//         $(".popupbtn").style.cursor = "pointer";
-//         $(".popupbtn img").src = "../icons/popup.svg";
-//       }else if (e==2) {
-//         $(".popupbtn").disabled = true;
-//         $(".popupbtn").style.background = "#4bb97f";
-//         $(".popupbtn").style.cursor = "no-drop";
-//         $(".popupbtn img").src = "../icons/window.svg";
-//       }
-//     }
+var app = {};
 
-//   },
-//   "get":{
-//     "list": ()=>{
-//       return new Promise((resolve, reject) =>{
-//         let row_tab;
-//         API.tabs.query({
-//           audible: true,
-//           windowType: "normal"
-//         },(tabs)=>{
-//           tabs.sort((currentTab, oldTab)=> currentTab.id - oldTab.id);
-//           row_tab = []
-//           tabs.forEach(tab => {
-//             if (`chrome-extension://${API.runtime.id}/data/options/options.html` != tab.url) {
-//               row_tab.push(tab);
-//             }
-//           });
-//           resolve(row_tab);
-//         })
-        
-//       });
-//     },
-//     "tab": async()=>{
-//       return new Promise(((resolve, reject) => {
-//             chrome.tabs.query({
-//                 active: true
-//             }, (tabs => {
-//                 chrome.runtime.lastError || (this.playingTabId = tabs[0].id, resolve(this.playingTabId))
-//             }))
-//       }))
-//     },
-//     "player": async()=>{
-//       responseOptions = await config.storage();
-//       currentTab = await config.get.tab();
-//       const audioStates = responseOptions.audioStates;
-//       if (audioStates && currentTab) {
-//         if (audioStates[currentTab]) {
-//           return currentTab;
-//         }else{
-//           return false;
-//         }
-//       }else{
-//         return false;
-//       }
-//     }
-//   },
-//   "event": async()=> {
-//     $(".tabs__list").addEventListener("click", (event) => {
-//       event.preventDefault();
-//       const ele = event.target.closest(".tab");
-//       const tabId = parseInt(ele.dataset.tabId, 10);
-//       API.tabs.update(tabId, {active: true}, (tab) => {
-//           API.windows.update(tab.windowId, {
-//               focused: true
-//           })
-//       });
-//     },false);
-
-//     $(".popupbtn").addEventListener("click", async ()=>{
-//         background.send("popup_open");
-//         window.close();
-//     });
-
-//     $(".volume-slider").addEventListener("input", (event)=> {
-//       var range = event.currentTarget.value;
-//       $(".volume-current-value").innerText = range * 6;
-//       config.set.anim(range * 6);
-//       config.id()!= null ? background.send("volume", {"value":range,"tabId": config.id()}) : background.send("volume", {"value":range}); 
-      
-//     });
-
-//     $(".speaker").addEventListener("click", async ()=>{
-//       config.set.anim(0);
-//       $(".volume-slider").value = 0;
-//       $(".volume-current-value").innerText = 0;
-//       config.id()!= null ? background.send("mute", config.id()) : background.send("mute");
-//     });
-
-//     $(".resetbtn").addEventListener("click", async ()=>{
-//       if ($(".resetbtn img")) {
-//         $(".resetbtn img").style.transform =  
-//         $(".resetbtn img").style.transform == '' ? "rotate(720deg) translateZ(0)" : '';        
-//       }
-//       config.set.volume(100);
-//       config.set.button(0);
-//       background.send("pintab_reset");
-//     });
-//   },
-//   "close": function(e){
-//       config.id()!= null ? e == config.id() ? window.close() : null: null;
-//   },
-//   "mode": function(e) {
-//     if (!$("body")) return;
-//     if (e) {
-//       if (!$("body").classList.contains('dark')){
-//         $("body").classList.add('dark')
-//       }
-//     }else{
-//       if ($("body").classList.contains('dark')){
-//         $("body").classList.remove('dark')
-//       }
-//     }
-//   },
-//   "storage": async()=> {
-//     return new Promise((resolve, reject) =>{
-//         API.storage.local.get({
-//           "darkMode": false,
-//           "audioStates": false
-//         }, (options)=>{
-//             resolve(options);
-//         })
-//       });
-//   },
-//   "speaker": function speaker() {
-//     var qs = (el = "") => document.querySelector(el);
-//     var fromTo = (from, to, prgrs = 0) => from + (to - from) * prgrs;
-//     var getCenter = (line = {}) => {
-//       return {
-//         x: (+line.getAttribute("x1") + +line.getAttribute("x2")) / 2,
-//         y: (+line.getAttribute("y1") + +line.getAttribute("y2")) / 2
-//       }
-//     };
-//     var getScalePoint = (obj = {}, onScene = true) => {
-//       if (!onScene) {
-//         let svgRect = obj.getBBox();
-//         return {
-//           x: svgRect.x + svgRect.width / 2,
-//           y: svgRect.y + svgRect.height / 2
-//         }
-//       }
-//       let rect = obj.getBoundingClientRect();
-//       return {
-//         x: rect.width / 2,
-//         y: rect.height / 2
-//       }
-//     };
-
-//     var volObj = {
-//       speakB: qs("#speakB"),
-//       arcBigB: qs("#arcBigB"),
-//       arcSmB: qs("#arcSmB"),
-
-//       speakF: qs("#speakF"),
-//       arcBigF: qs("#arcBigF"),
-//       arcSmF: qs("#arcSmF"),
-
-//       crossLtRb: qs("#crossLtRb"),
-//       crossLbRt: qs("#crossLbRt")
-//     };
-
-//     var pathLen = {
-//       arcBigLen: volObj.arcBigF.getTotalLength(),
-//       arcSmLen: volObj.arcSmF.getTotalLength(),
-//       speakLen: volObj.speakF.getTotalLength()
-//     };
-
-//     var transforms = {
-//       translate3D: function (x = 0, y = 0, z = 0, el = "px") {
-//         return `translate3D(${x}${el}, ${y}${el}, ${z}${el})`;
-//       },
-
-//       translate: function (x = 0, y = 0, el = "px") {
-//         return `translate(${x}${el}, ${y}${el})`;
-//       },
-
-//       rotate3d: function (x = 0, y = 0, z = 0, deg = 0) {
-//         return `rotate3d(${x}, ${y}, ${z}, ${deg}deg)`;
-//       },
-
-//       rotate: function (deg = 0) {
-//         return `rotate(${deg}deg)`;
-//       },
-
-//       scale: function (x = 1, y = 1) {
-//         return `scale(${x}, ${y})`;
-//       },
-
-//       perspective: function (val = 0, el = "px") {
-//         return `perspective(${val}${el})`;
-//       }
-//     };
-
-//     var easing = {
-//       inCubic: function (t, b, c, d) {
-//         var ts = (t /= d) * t;
-//         var tc = ts * t;
-//         return b + c * (1.7 * tc * ts - 2.05 * ts * ts + 1.5 * tc - 0.2 * ts + 0.05 * t);
-//       },
-
-//       outElastic: function (t, b, c, d) {
-//         var ts = (t /= d) * t;
-//         var tc = ts * t;
-//         return b + c * (33 * tc * ts + -106 * ts * ts + 126 * tc + -67 * ts + 15 * t);
-//       },
-
-//       customSin: function (t, b, c, d) {
-//         var ts = (t /= d) * t;
-//         var tc = ts * t;
-//         return b + c * (81 * tc * ts + -210 * ts * ts + 190 * tc + -70 * ts + 10 * t);
-//       }
-//     };
-
-//     var play = {
-//       dx: 1 / 5,
-//       ds: 0.03,
-//       flag: true,
-//       step: 0,
-//       speed: 5,
-
-//       curPosBig: {
-//         x: 0,
-//         y: 0,
-//         scale: 1
-//       },
-
-//       curPosSm: {
-//         x: 0,
-//         y: 0,
-//         scale: 1
-//       },
-
-//       curPos: 1,
-
-//       off: false,
-//       offCurStep: 100,
-//       offMaxStep: 100,
-//       offSpeed: 2,
-//       offRefresh: function () {
-//         this.offCurStep = this.offMaxStep;
-//         this.off = true;
-//       },
-
-//       on: false,
-//       onCurStep: 0,
-//       onMaxStep: 20,
-//       onSpeed: 2,
-//       onRefresh: function () {
-//         this.off = false;
-//         this.onCurStep = 0;
-//         this.on = true;
-//       },
-
-//       pointLbRt: getCenter(volObj.crossLbRt),
-//       pointLtRb: getCenter(volObj.crossLtRb),
-
-//       animation: function () {
-//         if (this.off) { // animation when volume became 0
-//           [volObj.arcBigB, volObj.arcBigF, volObj.arcSmB, volObj.arcSmF].forEach((el) => {
-//             el.setAttribute("visibility", "hidden");
-//           });
-//           [volObj.crossLbRt, volObj.crossLtRb].forEach((el) => {
-//             el.setAttribute("visibility", "visible");
-//           });
-
-//           let len = pathLen.speakLen;
-//           let step1 = 20;
-//           let step2 = this.offMaxStep - step1;
-//           let backLen = 0.7;
-
-//           if (this.offCurStep >= this.offMaxStep - step1) {
-//             let progress = (step1 + this.offCurStep - this.offMaxStep) / step1;
-//             let progressB = fromTo(1, backLen, 1 - progress);
-//             volObj.speakF.setAttribute("stroke-dasharray", len * progress + "," + len * 1.05);
-//             volObj.speakF.setAttribute("stroke-dashoffset", -len * (1 - progress) / 2 + "");
-//             volObj.speakB.setAttribute("stroke-dasharray", len * progressB + "," + len * 1.05);
-//             volObj.speakB.setAttribute("stroke-dashoffset", -len * (1 - progressB) / 2 + "");
-//           }
-
-//           if (this.offCurStep < step2 && this.offCurStep >= step2 - step1) {
-//             let progress = 1 - (this.offCurStep - step2 + step1) / step1;
-//             let progressB = fromTo(backLen, 1, progress);
-//             volObj.speakB.setAttribute("stroke-dasharray", len * progressB + "," + len * 1.05);
-//             volObj.speakB.setAttribute("stroke-dashoffset", -len * (1 - progressB) / 2 + "");
-//           }
-
-//           if (this.offCurStep < step2 && this.offCurStep >= 0) {
-//             volObj.speakF.setAttribute("visibility", "hidden");
-//             let progress = this.offCurStep / step2;
-//             [volObj.crossLbRt, volObj.crossLtRb].forEach((el, index) => {
-//               let scale = easing.outElastic(1 - progress, 0, 1, 1);
-//               let dx = index == 0 ?
-//                 easing.customSin(1 - progress, -3, 3, 1) :
-//                 easing.customSin(1 - progress, -2, 2, 1);
-//               let dy = index == 0 ?
-//                 easing.customSin(1 - progress, -2, 2, 1) :
-//                 easing.customSin(1 - progress, 2, -2, 1);
-//               let x = -this.pointLbRt.x * (scale - 1) + dx;
-//               let y = -this.pointLbRt.y * (scale - 1) + dy;
-//               el.setAttribute("transform",
-//                 transforms.translate(x, y, "") +
-//                 transforms.scale(scale, scale));
-//             });
-//           }
-//           this.offCurStep += -this.offSpeed;
-//         }
-//         else {
-//           if (this.on) {
-//             [volObj.speakF, volObj.arcBigB, volObj.arcSmB, volObj.arcSmF].forEach((el) => {
-//               el.setAttribute("visibility", "visible");
-//             });
-//             [volObj.crossLbRt, volObj.crossLtRb].forEach((el) => {
-//               el.setAttribute("visibility", "hidden");
-//               el.setAttribute("transform", "scale(0)");
-//             });
-//             let len = pathLen.speakLen;
-//             let progress = this.onCurStep / this.onMaxStep;
-//             volObj.speakF.setAttribute("stroke-dasharray", len * progress + "," + len * 1.05);
-//             volObj.speakF.setAttribute("stroke-dashoffset", -len * (1 - progress) / 2 + "");
-//             this.onCurStep += this.onSpeed;
-//           }
-
-//           let dxBig, dxSm, sclFactB, sclFactSm;
-//           if (this.step >= this.speed) {
-//             this.flag = !this.flag;
-//             this.step = 0;
-//           }
-//           let progress = this.step / this.speed;
-//           let amplitudeB = 1 - easing.inCubic(1 - this.curPos, 0, 1, 0.5);
-//           let amplitudeS = 1 - easing.inCubic(1 - this.curPos, 0, 1, 1);
-
-//           if (this.curPos < 0.5) amplitudeB = 0;
-//           if (amplitudeS <= 0 || !amplitudeS) amplitudeS = 0;
-
-//           if (this.flag) {
-//             dxBig = fromTo(0, this.dx * 3, progress);
-//             dxSm = fromTo(0, -this.dx * 2, progress);
-//             sclFactB = fromTo(0, this.ds, progress);
-//             sclFactSm = fromTo(0, -this.ds, progress);
-//           }
-//           else {
-//             dxBig = fromTo(this.dx * 3, 0, progress);
-//             dxSm = fromTo(-this.dx * 2, 0, progress);
-//             sclFactB = fromTo(this.ds, 0, progress);
-//             sclFactSm = fromTo(-this.ds, 0, progress);
-//           }
-
-//           [volObj.arcBigF, volObj.arcBigB].forEach((el) => {
-//             let scale = this.curPosBig.scale + sclFactB * amplitudeB;
-//             let y = -drag.pointBig.y * (scale - 1) * 1.5;
-//             el.setAttribute("transform",
-//               transforms.translate(this.curPosBig.x + dxBig * amplitudeB, y, "")
-//               + transforms.scale(scale, scale)
-//             );
-//           });
-
-//           [volObj.arcSmF, volObj.arcSmB].forEach((el) => {
-//             let scale = this.curPosSm.scale + sclFactSm * amplitudeS;
-//             let y = -drag.pointSm.y * (scale - 1) * 3;
-//             el.setAttribute("transform",
-//               transforms.translate(this.curPosSm.x + dxSm * amplitudeS, y, "")
-//               + transforms.scale(scale, scale)
-//             );
-//           });
-//           this.step++;
-//         }
-//         requestAnimationFrame(this.animation.bind(play));
-//       }
-//     };
-
-//     requestAnimationFrame(play.animation.bind(play));
-
-//     drag = {
-//       dx: 0,
-//       maxX: 600,
-//       minX: 0,
-//       curCx: 600,
-
-//       pointBig: getScalePoint(volObj.arcBigF),
-//       pointSm: getScalePoint(volObj.arcSmF),
-
-//       interact: false,
-
-//       animateDrag: function () {
-//         this.curCx += this.dx;
-//         let cx = this.curCx;
-
-//         let smLen = pathLen.arcSmLen;
-//         let bgLen = pathLen.arcBigLen;
-
-//         if (cx > this.maxX) { cx = this.maxX; }
-//         if (cx < this.minX) { cx = this.minX; }
-
-//         let progress = (cx - this.minX) / (this.maxX - this.minX);
-//         play.curPos = progress;
+app.tab = {
+  "id": {
+    "active": function() {
+      return new Promise(((resolve) => {
+        API.tabs.query({
+          active: true,
+          currentWindow: true
+        }, (tabs => {
+          let tabId = null;
+          if(!chrome.runtime.lastError){
+            if(tabs[0].url != LINKS.options){
+              tabId = tabs[0].id;
+            }
+          }
+          resolve(tabId);
+        }))
+      }));
+    },
+    "params": function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams ? urlParams.get("tabId") ? urlParams.get("tabId") : null : null;
+    }
+  },
+  "audible": function() {
+    return new Promise(((resolve) => {
+      API.tabs.query({
+        audible: true,
+        windowType: "normal"
+      }, (tabs => {
+        tabs.sort((currentTab, oldTab) => currentTab.id - oldTab.id);
+        let row_tab = []
+        tabs.forEach(tab => {
+          if (NORMALIZE(LINKS.options) != NORMALIZE(tab.url)) {
+            row_tab.push(tab);
+          }
+        });
+        resolve(row_tab);
+      }));
+    }));
+  },
+  "update": function() {
+    API.tabs.onUpdated.addListener(
+      function (tabId, changeInfo, tab) {
+          DEBOUNCE(app.list, 500)
+      }
+    );
+  },
+  "remove": function(){
+    API.tabs.onRemoved.addListener(app.close);
+  }
+}
 
 
-//         let scaleFactor = fromTo(1, 0.85, 1 - progress);
-//         let scaleDxBig = fromTo(0, -3, 1 - progress);
-//         let scaleDxSm = fromTo(0, -1, 1 - progress);
+app.close = function(e) {
+    if (app.tab.id.params() != null) {
+      if (e == app.tab.id.params()) {
+        window.close(); 
+      }
+    }
+}
 
-//         [volObj.arcBigF, volObj.arcBigB].forEach((el) => {
-//           play.curPosBig.x = -this.pointBig.x * (scaleFactor - 1) + scaleDxBig;
-//           play.curPosBig.y = -this.pointBig.y * (scaleFactor - 1) * 1.5;
-//           play.curPosBig.scale = scaleFactor;
-//           el.setAttribute("transform",
-//             transforms.translate(play.curPosBig.x, play.curPosBig.y, "")
-//             + transforms.scale(scaleFactor, scaleFactor)
-//           );
-//         });
+app.storage = {
+  set: function(key, value) {
+    return new Promise((resolve) => {
+      API.storage.local.set({[key]: value}, resolve);
+    });
+  },
+  get: function(key) {
+    return new Promise((resolve) => {
+      API.storage.local.get([key], (result) => {
+        resolve(result[key]);
+      });
+    });
+  }
+}
 
-//         [volObj.arcSmF, volObj.arcSmB].forEach((el) => {
-//           play.curPosSm.x = -this.pointSm.x * (scaleFactor - 1) + scaleDxSm;
-//           play.curPosSm.y = -this.pointSm.y * (scaleFactor - 1) * 3;
-//           play.curPosSm.scale = scaleFactor;
-//           el.setAttribute("transform",
-//             transforms.translate(play.curPosSm.x, play.curPosSm.y, "")
-//             + transforms.scale(scaleFactor, scaleFactor)
-//           );
-//         });
+app.trenslate = function() {
+  return new Promise((resolve) => {
+    const elements = document.querySelectorAll("[data-message]");
+    for (const element of elements) {
+      const key = element.dataset.message;
+      const message = chrome.i18n.getMessage(key);
+      if (message) {
+        element.textContent = message;
+      } else {
+        console.error("Missing chrome.i18n message:", key);
+      }
+    }
+    resolve();
+  });
+}
 
-//         if (progress > 0.5) {
-//           if (play.off) { play.onRefresh(); }
-//           let prgForBig = fromTo(1, -1, 1 - progress);
-//           volObj.arcBigF.setAttribute("visibility", "visible");
-//           volObj.arcSmF.setAttribute("visibility", "visible");
-//           volObj.arcBigF.setAttribute("stroke-dasharray", bgLen * prgForBig + "," + bgLen * 1.05);
-//           volObj.arcBigF.setAttribute("stroke-dashoffset", -bgLen * (1 - prgForBig) / 2 + "");
-//           volObj.arcSmF.setAttribute("stroke-dasharray", smLen + "");
-//           volObj.arcSmF.setAttribute("stroke-dashoffset", "0");
-//         }
+app.text = function() {
+  $(".footer-text").innerText = `${API.runtime.getManifest().name} v.${API.runtime.getManifest().version}`;
+}
 
-//         if (progress <= 0.5 && progress > 0) {
-//           if (play.off) { play.onRefresh(); }
-//           let prgForSm = fromTo(1, 0, 1 - progress * 2);
-//           volObj.arcBigF.setAttribute("visibility", "hidden");
-//           volObj.arcSmF.setAttribute("visibility", "visible");
-//           volObj.arcSmF.setAttribute("stroke-dasharray", smLen * prgForSm + "," + smLen * 1.05);
-//           volObj.arcSmF.setAttribute("stroke-dashoffset", -smLen * (1 - prgForSm) / 2 + "");
-//         }
+app.link = function() {
+    $("#header-icons a")? $("#header-icons a").href = LINKS.homepage : '';
+    $(".footer-fb").addEventListener("click", function () {background.send("url", {"url": LINKS.facebook})});
+    $(".footer-yt").addEventListener("click", function () {background.send("url", {"url": LINKS.youtube})});
+    $(".footer-web").addEventListener("click", function () {background.send("url", {"url": LINKS.twitter})});
+}
 
-//         if (progress <= 0) {
-//           volObj.arcSmF.setAttribute("visibility", "hidden");
-//           if (play.off == false) { play.offRefresh(); }
-//         }
-//       }
-//     };
-//   },
-//   "debounce": function(callback, delay) {
-//     let timer
-//     return function() {
-//       clearTimeout(timer)
-//       timer = setTimeout(() => {
-//         callback();
-//       }, delay)
-//     }
-//   },
-//   "popup": function() {
-//     config.set.button(config.id()==null ? 0 : 2);
+app.Speaker = {
+  "init": function () {
+    this.speaker = new SpeakerAnimation('#speaker');
+  },
+  "gain": function (value) {
+    this.speaker.gain(value);
+  }
+}
 
-//     if (config.id()==null) {
-//       $(".volume-slider").addEventListener("change", async()=> {
-//         const player = await config.get.player();
-//         if (player) {
-//           const active_tab = await config.get.list();
-//           if (active_tab) {
-//             active_tab.forEach(tab => {
-//               if (tab.id == player) {
-//                 config.set.button(1);
-//               }
-//             });
-//           }
-//         }else{
-//           config.set.button(0);
-//         }
-//       });
-//     }else{
-//       $(".resetbtn").disabled = true;
-//       $(".resetbtn").style.background = "#fc6060";
-//       $(".resetbtn").style.cursor = "no-drop";
-//     }
+app.event = {
+  "rate": function() {
+    $(".star").forEach((event)=>{
+      event.addEventListener("click",(target)=>{
+        const atr = target.currentTarget.getAttribute("data-action");
+        atr == 'support' ? 
+        background.send("url", {"url":  LINKS.support}) :
+        atr == 'review' ? 
+        background.send("url", {"url":  LINKS.review}) : '';
+      });
+    });
+  },
+  "mode": function() {
+    app.storage.get("darkMode").then((darkMode)=>{
+      $("#toogle").checked = darkMode;
+      if (darkMode) {
+        if (!$("body").classList.contains('dark')){
+          $("body").classList.add('dark')
+        }
+      }else{
+        if ($("body").classList.contains('dark')){
+          $("body").classList.remove('dark');
+        }
+      }
+    });
 
-//   },
-//   "translate": function() {
-//     return new Promise((resolve) => {
-//       const elements = document.querySelectorAll("[data-message]");
-//       for (const element of elements) {
-//         const key = element.dataset.message;
-//         const message = chrome.i18n.getMessage(key);
-//         if (message) {
-//           element.textContent = message;
-//         } else {
-//           console.error("Missing chrome.i18n message:", key);
-//         }
-//       }
-//       resolve();
-//     });
-//   },
-//   "setup": function() {
-//     config.set.list();
-//     config.set.link();
-//     config.set.rate();
-//     config.set.mode();
-//   },
-//   "load": async ()=> {
-//     API.tabs.onUpdated.addListener(config.debounce(config.set.list, 500));
-//     API.tabs.onRemoved.addListener(config.close);
-//     background.send("load", config.id()==null ? await config.get.tab() : null);
-//     config.translate(); 
-//     config.speaker();
-//     config.event(); 
-//     config.setup(); 
-//     config.popup(); 
-//   }
-          
-// }
+    $("#toogle").addEventListener("click",async (event)=> {
+      const darkMode = event.currentTarget.checked;
+      await app.storage.set("darkMode", darkMode); 
+      if (darkMode) {
+        if (!$("body").classList.contains('dark')){
+          $("body").classList.add('dark')
+        }
+      }else{
+        if ($("body").classList.contains('dark')){
+          $("body").classList.remove('dark');
+        }
+      }
+    });
+  },
+  "list": function() {
+    $(".tabs__list").addEventListener("click", (event) => {
+      event.preventDefault();
+      const ele = event.target.closest(".tab");
+      const tabId = parseInt(ele.dataset.tabId, 10);
+      API.tabs.update(tabId, {active: true}, (tab) => {
+          API.windows.update(tab.windowId, {
+              focused: true
+          })
+          API.runtime.lastError || (app.close(tabId));
+      });
+    },false);
+  },
+  "popup": function() {
+    if(app.tab.id.params()==null && $(".popupbtn").disabled == true){
+      $(".volume-slider").addEventListener("change", async ()=> {
+        const audioStates = await app.storage.get("audioStates");
+        if(audioStates){
+          const tabId = await app.tab.id.active();
+          console.log(audioStates)
+          if(audioStates[tabId]){
+            $(".popupbtn").disabled = false;
+            $(".popupbtn").style.background = "var(--btn-color)";
+            $(".popupbtn").style.cursor = "pointer";
+            $(".popupbtn img").src = "../icons/popup.svg";
+          }
+        }
+      });
+      $(".popupbtn").addEventListener("click", async ()=>{
+        background.send("popup", app.tab.id.params() == null ? {"tabId": await app.tab.id.active()} : null);
+        window.close();
+      });
+    }
+  },
+  "input": function() {
+    $(".volume-slider").addEventListener("input", async (event)=> {
+      var range = event.currentTarget.value;
+      $(".volume-current-value").innerText = range * 6;
+      app.Speaker.gain(range * 6);
+      const tabId = app.tab.id.params() != null ? app.tab.id.params() : (await app.tab.id.active());
+      background.send("volume", {"value": parseInt(range * 6), "tabId": tabId});
+    });
 
-// background.connect(API.runtime.connect({"name": "popup"}));
+    $(".speaker").addEventListener("click", async ()=>{
+      app.Speaker.gain(0);
+      $(".volume-slider").value = 0;
+      $(".volume-current-value").innerText = 0;
+      const tabId = app.tab.id.params() != null ? app.tab.id.params() : (await app.tab.id.active());
+      background.send("volume", {"value":"0", "tabId": tabId});
+    });
+  },
+  "reset": function() {
+    $(".resetbtn").addEventListener("click", ()=>{
+      const reset_img = $(".resetbtn img");
+      if (reset_img) {
+        reset_img.style.transform =  
+        reset_img.style.transform == '' ? "rotate(720deg) translateZ(0)" : '';        
+      }
+      app.set.value(1);
+      background.send("reset");
+    });
+  }
+}
 
-// background.receive("close", config.close);
-// background.receive("set", config.set.volume);
+app.set = {
+  "size": function() {
+    if (app.tab.id.params() == null) {
+      const body = document.body;
+      const html = document.documentElement;
+      if (body && html) {
+        body.style.width = "410px";
+        html.style.height = "auto";
+      }
+    }
+  },
+  "value": function(val){
+    $(".volume-current-value").innerText = Math.round(100 * val);
+    $(".volume-slider").value = Math.round((100 * val) / 6) ;
+    app.Speaker.gain(Math.round(100 * val));
+  },
+  "button": function(){
+    if(app.tab.id.params()){
+      $(".resetbtn").disabled = true;
+      $(".resetbtn").style.background = "#fc6060";
+      $(".resetbtn").style.cursor = "no-drop";
+
+      $(".popupbtn").disabled = true;
+      $(".popupbtn").style.background = "#4bb97f";
+      $(".popupbtn").style.cursor = "no-drop";
+      $(".popupbtn img").src = "../icons/window.svg";
+
+    } else{
+        $(".popupbtn").disabled = true;
+        $(".popupbtn").style.background = "#fc6060";
+        $(".popupbtn").style.cursor = "no-drop";
+        $(".popupbtn img").src = "../icons/popup.svg";
+    }
+  },
+  "list": function() {
+    let allTab = document.querySelectorAll("a.tab");
+    if (allTab) {
+      for(element of allTab){
+        const parentElement = element.parentNode; 
+        parentElement.removeChild(element); 
+      }
+    }
+    app.tab.audible().then((tabs) => {
+      if (tabs) {
+        $(".tabs__title").textContent = API.i18n.getMessage(0 < tabs.length ? 'active_tabs' : 'deactive_tabs');
+        tabs.forEach(tab => {
+            const ele = $("#template-tab").content;
+            ele.querySelector(".tab").dataset.tabId = tab.id;
+            ele.querySelector(".tab__icon-image").src = tab.favIconUrl;
+            ele.querySelector(".tab__title").textContent = tab.title;
+            if (tab.id == app.tab.id.params()) {
+              $("title").textContent = tab.title;
+            }
+            $(".tabs__list").appendChild(document.importNode(ele, true));
+          });
+          if (2 < tabs.length) {
+            if (!$(".tabs__list").classList.contains('more')){
+              $(".tabs__list").classList.add('more');
+            }
+          }else{
+            if ($(".tabs__list").classList.contains('more')){
+              $(".tabs__list").classList.remove('more');
+            }
+          }
+      }
+    });
+  },
+  "close": function(tabId) {
+    const params = app.tab.id.params();
+    if(params){
+      if(params == tabId){
+        window.close();
+      }
+    }
+  }
+}
+app.get = {
+  "query": async ()=>{
+    const tabId = app.tab.id.params() != null ? app.tab.id.params() : (await app.tab.id.active());
+    background.send("query", {tabId: tabId, isPopup: app.tab.id.params() != null ? true : false});
+  }
+}
+
+app.load = function() {
+  app.get.query();
+  app.set.size();
+  app.set.list();
+  app.set.button();
 
 
-// window.addEventListener("load", config.load, false);
+  app.trenslate().then(() => {
+    app.text();
+    app.link();
+  });
+
+  app.Speaker.init();
+  app.event.rate();
+  app.event.mode();
+  app.event.list();
+  app.event.input();
+  app.event.reset();
+  app.event.popup();
+  app.tab.update();
+  app.tab.remove();
+}
+
+background.connect(API.runtime.connect({"name": "popup"}));
+background.receive("volume-value", app.set.value);
+background.receive("is-close", app.set.close);
+window.addEventListener("load", app.load, false);

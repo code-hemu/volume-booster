@@ -19,7 +19,7 @@ function watch(options) {
             timeoutId = null;
             try {
                 const changedFiles = Array.from(queue).sort();
-                log.ok(`Files changed:${changedFiles.map((path) => `\n${path}`)}`);
+                log.ok(`🔄 Files changed:${changedFiles.map((path) => `\n${path}`)}`);
                 queue.clear();
                 await options.onChange(changedFiles);
             } catch (err) {

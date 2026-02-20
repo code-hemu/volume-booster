@@ -18,9 +18,9 @@
 
     Home: https://github.com/code-hemu/volume-booster
 */
-
+importScripts("lib/platform.js");
 importScripts("lib/config.js");
-importScripts("lib/chrome.js");
+importScripts("lib/browser.js");
 importScripts("lib/runtime.js");
 importScripts("lib/common.js");
 

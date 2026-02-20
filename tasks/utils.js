@@ -1,7 +1,8 @@
-import {accessSync, existsSync, readdirSync, statSync} from 'node:fs';
+import {accessSync, existsSync} from 'node:fs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import {absolutePath} from './paths.js';
 
 const colors = Object.entries({
     gray: '\x1b[90m',
@@ -73,24 +74,37 @@ export async function getConfig(platform) {
 }
 
 export async function getAllFiles(folderPath){
-  const dir = path.resolve(folderPath)
-  let results = [];
+  const {globby} = await import('globby');
+    return await globby(folderPath);
+}
 
-  const list = readdirSync(dir);
-  for (const file of list) {
-    const fullPath = path.join(dir, file);
-    const stat = statSync(fullPath);
-
-    if (stat.isDirectory()) {
-      results = results.concat(getAllFiles(fullPath));
-    } else {
-      results.push(fullPath);
+export async function removeFolder(dir) {
+    if (await pathExists(dir)) {
+        await fs.rm(dir, {recursive: true});
     }
-  }
-  return results;
+}
+
+export async function createFolder(dir) {
+    if (!(await pathExists(dir))) {
+        await fs.mkdir(dir, {recursive: true});
+    }
 }
 
 export async function copyFile(src, dest) {
     await mkDirIfMissing(dest);
     await fs.copyFile(src, dest);
+}
+
+export async function fileExistsInConfig(config, absoluteFilePath) {
+    const normalizedTarget = absolutePath(absoluteFilePath);
+    for (const [dest, src] of Object.entries(config)) {
+        for (const file of src) {
+            const relativePath = absolutePath(file);
+            // console.log(`Checking if ${relativePath} == ${normalizedTarget} or ${absoluteFilePath}`);
+            if (relativePath == normalizedTarget || relativePath == absoluteFilePath) {
+                return JSON.parse(`{"${dest}":["${file}"]}`);
+            }
+        }
+    }
+    return false;
 }

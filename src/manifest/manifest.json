@@ -22,10 +22,18 @@
    "default_locale": "en",
    "manifest_version": 3,
    "name": "__MSG_app_name__",
+   "homepage_url": "https://www.codehemu.in/2026/02/volume-booster-project.html",
    "permissions": [
         "tabs",
         "tabCapture",
         "storage"],
    "short_name": "volume",
-   "version": "1.2.1"
+   "version": "1.0.0",
+   "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+V"
+      }
+    }
+  }
 }

@@ -1,0 +1,17 @@
+@app_description
+¡Bendir el poder del sonido en tu navegador!Aumente el volumen al nivel máximo y controle la TI de cualquier pestaña.
+
+@app_name
+Volume Booster - Aumentar el sonido
+
+@active_tabs
+Pestañas activas reproduciendo audio:
+
+@deactive_tabs
+No hay pestañas con audio en este momento
+
+@volume
+Volumen
+
+@notice
+Mantenga esta ventana abierta para aumentar su sonido.Esto se debe al requisito de privacidad por parte del navegador.

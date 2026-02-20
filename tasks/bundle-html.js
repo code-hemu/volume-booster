@@ -1,29 +1,16 @@
 import path from 'node:path';
 import { build } from 'esbuild';
 import { htmlPlugin } from '@craftamap/esbuild-plugin-html';
-import {getDestDir, absolutePath} from './paths.js';
-import {readFile, writeFile, getConfig, getAllFiles, log} from './utils.js';
+import {getDestDir} from './paths.js';
+import {readFile, writeFile, getConfig, getAllFiles, log, fileExistsInConfig} from './utils.js';
 import {createTask} from './task.js';
 
 const srcHTMLDir = 'src/html';
 
 async function removeTopSourceComment(filePath) {
     let code = await readFile(filePath, 'utf8');
-    code = code.replace(/^\s*<!--[\s\S]*?-->\s*/, '');
-    await writeFile(filePath, code);
-}
-
-function fileExistsInConfig(config, absoluteFilePath) {
-    const normalizedTarget = path.normalize(absoluteFilePath);
-    for (const [dest, src] of Object.entries(config)) {
-        for (const file of src) {
-            const relativePath = absolutePath(file);
-            if (path.normalize(relativePath) == normalizedTarget){
-                return JSON.parse(`{"${dest}":["${file}"]}`);
-            }
-        }
-    }
-    return false;
+    const newCode = code.replace(/^\s*<!--[\s\S]*?-->\s*/, '');
+    await writeFile(filePath, newCode);
 }
 
 async function esbuildHTML(config, isDebug, platform){
@@ -32,7 +19,6 @@ async function esbuildHTML(config, isDebug, platform){
     for (const [dest, src] of Object.entries(config.entry)) {
         buildResult = await build({
             entryPoints: src,
-            bundle: true,
             outdir: path.join(dir, dest),
             plugins: [htmlPlugin()],
             loader: {
@@ -58,12 +44,13 @@ async function esbuildHTML(config, isDebug, platform){
 }
 
 export function createBundleHTMLTask(srcHTMLDir){
+    let currentWatchFiles;
     const bundleHTML = async ({platforms, isDebug, logInfo, logWarn}) => {
         for(const platform of platforms){
-            const config = await getConfig(platform);
+            const config = (await getConfig(platform));
             if(config.html){
                 await esbuildHTML(config.html, isDebug, platform);
-                if (logInfo) log.info(`Bundling HTML for ${platform}...`);
+                if (logInfo) log.ok(`Bundling HTML for ${platform}...`);
             } else{
                 if(logWarn) log.warn(`No HTML config found for ${platform}, skipping HTML bundling.`);
             }
@@ -72,15 +59,22 @@ export function createBundleHTMLTask(srcHTMLDir){
 
     const onChange = async (changedFiles, watcher, platforms, isDebug) => {
         for(const platform of platforms){
-            let config = await getConfig(platform);
-            if (!config.html) continue; // Skip if no HTML config for this platform
-            const exists = fileExistsInConfig(
+            const config = (await getConfig(platform));
+            
+            if (!config.html) continue;
+            const exists = await fileExistsInConfig(
                 config.html.entry,
                 changedFiles[0]
             );
+
             if (exists){
-                config.html.entry = exists;
-                await esbuildHTML(config.html, isDebug, platform);
+                let newConfig = {
+                    html: {
+                        entry: exists,
+                        filename: config.html.filename
+                    }
+                };
+                await esbuildHTML(newConfig.html, isDebug, platform);
             }
         }
     }
@@ -89,7 +83,7 @@ export function createBundleHTMLTask(srcHTMLDir){
         bundleHTML,
     ).addWatcher(
       async () => {
-        const currentWatchFiles = await getAllFiles(srcHTMLDir);
+        currentWatchFiles = await getAllFiles(srcHTMLDir);
         return currentWatchFiles;
     }, onChange);
 }

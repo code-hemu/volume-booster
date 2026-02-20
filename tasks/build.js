@@ -6,19 +6,17 @@ import bundleHTML from './bundle-html.js';
 import bundleLocales from './bundle-locales.js';
 import bundleManifest from './bundle-manifest.js';
 import assetsCopy from './copy.js';
-
-
+import zip from './zip.js';
 import {log} from './utils.js';
 import {runTasks} from './task.js';
 
 const args = process.argv.slice(2);
 
 const platforms = [
-    'chrome-mv3',
-    'edge-mv3',
-    'opera-mv3',
-    'firefox-mv2',
-    'thunderbird'
+    'chrome',
+    'edge',
+    'naver',
+    'opera'
 ];
 
 let platform = [];
@@ -26,16 +24,18 @@ let platform = [];
 if (args.includes('--all')) {
     platform = platforms;
 } else {
-    if (args.includes('--chrome-mv3')) platform.push('chrome-mv3');
-    if (args.includes('--edge-mv3')) platform.push('edge-mv3');
-    if (args.includes('--firefox-mv2')) platform.push('firefox-mv2');
-    if (args.includes('--opera-mv3')) platform.push('opera-mv3');
-    if (args.includes('--thunderbird')) platform.push('thunderbird');
+    if (args.includes('--chrome')) platform.push('chrome');
+    if (args.includes('--edge')) platform.push('edge');
+    if (args.includes('--opera')) platform.push('opera');
+    if (args.includes('--naver')) platform.push('naver');
 }
 
+const versionArg = args.find((a) => a.startsWith('--version='));
+const version = versionArg ? versionArg.substring('--version='.length) : null;
 
 const settings = {
     platforms: platform,
+    version: version,
     isWatch: args.includes('--watch'),
     isRelease: args.includes('--release'),
     isDebug: args.includes('--debug'),
@@ -44,24 +44,30 @@ const settings = {
     logWarn: args.includes('--log-warn')
 }
 
+console.log(settings)
 const standardTask = [
     createFolder,
+    bundleHTML,
     bundleCSS,
     bundleJS,
-    bundleHTML,
     bundleLocales,
     bundleManifest,
     assetsCopy
 ];
 
-async function build() {
+const buildTask = [
+    ...standardTask,
+    zip,
+];
+
+(async () => {
     log.ok('--------------------------------');
     log.ok('🚀 Build started');
     try {
-        await runTasks(standardTask, settings);
+        await runTasks(settings.isDebug ? standardTask : buildTask, settings);
         if (settings.isWatch) {
             standardTask.forEach((task) => task.watch(settings.platforms, settings.isDebug));
-            log.ok('✔ Watching...');
+            log.ok('👀 Watching...');
         } else {
             log.ok('MISSION PASSED! RESPECT +');
         }
@@ -70,41 +76,4 @@ async function build() {
         log.error(`MISSION FAILED!`);
         process.exit(13);
     }
-}
-
-build();
-
-// if (isWatch) {
-//     console.log('👀 Watch mode enabled');
-//     fs.watch(path.resolve('./src'), { recursive: true }, async () => {
-//         console.log('🔄 File changed — rebuilding...');
-//         // await build();
-//     });
-// } else {
-//     build();
-// }
-
-
-
-// async function runBuild(target) {
-//     const env = prepareEnvironment({
-//         mode: isRelease ? 'release' : 'dev',
-//         target
-//     });
-
-//     const config = await loadConfiguration({
-//         target,
-//         mode: env.mode
-//     });
-
-//     bundleJS(config["esbuild"], env, target);
-//     // bundleCSS(config["less"], env, target);
-
-// }
-
-
-
-
-
-
-
+})();

@@ -1,11 +1,10 @@
 import {getDestDir, absolutePath} from './paths.js';
-import * as reload from './reload.js';
 import {createTask} from './task.js';
 import {readJSON, writeJSON, getAllFiles, pathExists} from './utils.js';
 
 const srcManifestDir = 'src/manifest';
 
-async function patchManifest(srcManifestDir, platform, isDebug, isWatch, isTest) {
+async function patchManifest(srcManifestDir, platform, isDebug, isWatch, isTest, version) {
     const manifestPath = `${srcManifestDir}/manifest-${platform}.json`;
     const existsManifest = await pathExists(manifestPath);
     const patched = await readJSON(existsManifest ? manifestPath : absolutePath(`${srcManifestDir}/manifest.json`));
@@ -14,25 +13,28 @@ async function patchManifest(srcManifestDir, platform, isDebug, isWatch, isTest)
         patched.description = `Debug build, platform: ${platform}, watch: ${isWatch ? 'yes' : 'no'}.`;
     } else {
         const packageJSON = await readJSON(absolutePath("package.json"));
-        patched.version = packageJSON.version;
+        patched.version = version || packageJSON.version;
+    }
+
+    if(platform == "naver"){
+        patched.default_locale = 'ko';
     }
     return patched;
 }
 
 
-async function bundleManifest(srcManifestDir, {platforms, isWatch, isDebug, isTest, logInfo}) {
+async function bundleManifest(srcManifestDir, {platforms, isWatch, isDebug, isTest, logInfo, version}) {
     for (const platform of platforms) {
-        const manifest = await patchManifest(srcManifestDir, platform, isDebug, isWatch, isTest);
+        const manifest = await patchManifest(srcManifestDir, platform, isDebug, isWatch, isTest, version);
         const destDir = getDestDir({isDebug, platform});
         await writeJSON(`${destDir}/manifest.json`, manifest);
-        if (logInfo) log.info(`Bundled manifest for platform ${platform}.`);
+        if (logInfo) log.ok(`Bundled manifest for platform ${platform}.`);
     }
 
 }
 export function bundleManifestTask(srcManifestDir){
     const onChange = async (changedFiles, watcher, platforms, isDebug) => {
-        await bundleManifest(srcManifestDir, {platforms, isWatch: true, isDebug, isTest: false});
-        reload.reload({type: reload.FULL});
+        await bundleManifest(srcManifestDir, {platforms, isWatch: true, isDebug, isTest: false, logInfo: false, version: null});
     }
     return createTask(
         'bundle-manifest',

@@ -2,26 +2,22 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import {getDestDir, absolutePath} from './paths.js';
-import {readFile, writeFile, getAllFiles} from './utils.js';
+import {readFile, writeFile, getAllFiles, getConfig} from './utils.js';
 import {createTask} from './task.js';
-import * as reload from './reload.js';
 
 const srcLocalesDir = 'src/_locales';
 
-async function writeFiles(data, fileName, {platforms, isDebug}){
+async function writeFiles(data, fileName, {platform, isDebug}){
     const locale = fileName.substring(0, fileName.lastIndexOf('.')).replace('-', '_');
     const getOutputPath = (dir) => `${dir}/_locales/${locale}/messages.json`;
-    for (const platform of platforms) {
-        const dir = getDestDir({isDebug, platform});
-        await writeFile(getOutputPath(dir), data);
-    }
-
+    const dir = getDestDir({isDebug, platform});
+    await writeFile(getOutputPath(dir), data);
 }
 
 async function localeFileToJson(filePath) {
-    let file = await readFile(filePath);
-    file = file.replace(/^#.*?$/gm, '');
-
+    let isfile = await readFile(filePath);
+    let file = isfile.replace(/^#.*?$/gm, '');
+    
     const messages = {};
 
     const regex = /@([a-z0-9_]+)/ig;
@@ -73,16 +69,27 @@ async function mergeLocale(localesDir, code) {
 async function bundleLocales(srcLocalesDir, {platforms, isDebug, logInfo}) {
     const absoluteSrcLocalesDir = absolutePath(srcLocalesDir);
     const list = await fs.readdir(absoluteSrcLocalesDir);
+
     for (const name of list) {
         if (!name.endsWith('.i18n')) {
-            if (logInfo) log.info(`Skipping non-locale file ${name} in ${srcLocalesDir}.`);
+            if (logInfo) log.ok(`Skipping non-locale file ${name} in ${srcLocalesDir}.`);
             continue;
         }
         const code = (name.split('.').at(-2));
         const locale = await mergeLocale(absoluteSrcLocalesDir, code);
         const fileName = name.substring(name.lastIndexOf('/') + 1);
-        await writeFiles(locale, fileName, {platforms, isDebug});
-        if (logInfo) log.info(`Bundled locale ${code} for platforms: ${platforms.join(', ')}.`);
+        for (const platform of platforms) {
+            const config = (await getConfig(platform));
+            if(config.locales){
+                if(config.locales.includes(code)){
+                    await writeFiles(locale, fileName, {platform, isDebug});
+                }
+            } else{
+                await writeFiles(locale, fileName, {platform, isDebug});
+            }
+        }
+        
+        if (logInfo) log.ok(`Bundled locale ${code} for platforms: ${platforms.join(', ')}.`);
     }
 }
 
@@ -93,9 +100,17 @@ export function createBundleLocalesTask(srcLocalesDir) {
             const fileName = file.substring(file.lastIndexOf(path.sep) + 1);
             const code = (fileName.split('.').at(-2));
             const locale = await mergeLocale(localesSrcDir, code);
-            await writeFiles(locale, fileName, {platforms, isDebug});
+            for (const platform of platforms) {
+                const config = (await getConfig(platform));
+                if(config.locales){
+                    if(config.locales.includes(code)){
+                        await writeFiles(locale, fileName, {platform, isDebug});
+                    }
+                } else{
+                    await writeFiles(locale, fileName, {platform, isDebug});
+                }
+            } 
         }
-        // reload.reload({type: reload.FULL});
     }
     return createTask(
         'bundle locales',

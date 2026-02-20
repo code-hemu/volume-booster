@@ -26,7 +26,7 @@ export function createCopyTask() {
                         }
                     }
                 }
-                if (logInfo) log.info(`Copying assets for ${platform}...`);
+                if (logInfo) log.ok(`Copying assets for ${platform}...`);
             } else{
                 if(logWarn) log.warn(`No assets config found for ${platform}, skipping assets copy.`);
             }
