@@ -19,13 +19,12 @@
     "npm": ">=11"
   },
   "scripts": {
-    "prebuild": "node --max-old-space-size=3072 tasks/cli.js zip",
+    "build": "node --max-old-space-size=3072 tasks/cli.js build --all --release",
     "chrome": "node --max-old-space-size=3072 tasks/cli.js build --chrome --release",
     "opera": "node --max-old-space-size=3072 tasks/cli.js build --opera --release",
     "never": "node --max-old-space-size=3072 tasks/cli.js build --naver --release",
     "edge": "node --max-old-space-size=3072 tasks/cli.js build --edge --release",
     "help": "node --max-old-space-size=3072 tasks/cli.js --help",
-    "build": "node --max-old-space-size=3072 tasks/cli.js build --all --release",
     "debug": "node --max-old-space-size=3072 tasks/cli.js build --all --debug",
     "watch": "node --max-old-space-size=3072 tasks/cli.js build --all --debug --watch",
     "zip": "node --max-old-space-size=3072 tasks/cli.js zip",

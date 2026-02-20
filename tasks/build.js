@@ -44,7 +44,6 @@ const settings = {
     logWarn: args.includes('--log-warn')
 }
 
-console.log(settings)
 const standardTask = [
     createFolder,
     bundleHTML,
