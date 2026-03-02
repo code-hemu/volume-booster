@@ -40,7 +40,22 @@ export default {
                 'src/assets/svg'
             ]
         }
-    }
+    },
+    "locales": [
+        "en", 
+        "es", 
+        "fa", 
+        "fi", 
+        "fr", 
+        "it", 
+        "ja",
+        "ko",
+        "ru",
+        "sv",
+        "sw",
+        "zh-CN",
+        "zh-TW"
+    ]
 };
 
 
