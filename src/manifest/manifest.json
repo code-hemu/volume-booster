@@ -26,7 +26,8 @@
    "permissions": [
         "tabs",
         "tabCapture",
-        "storage"],
+        "storage",
+        "offscreen"],
    "short_name": "volume",
    "version": "1.0.0",
    "commands": {

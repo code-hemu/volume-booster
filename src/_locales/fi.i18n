@@ -1,6 +1,3 @@
-@app_description
-Vapauta äänen voiman selaimessasi!Lisää äänenvoimakkuutta maksimitasolle ja hallitse minkä tahansa välilehden IT.
-
 @app_name
 Volume Booster - Lisätä ääntä
 
@@ -15,3 +12,7 @@ Tilavuus
 
 @notice
 Pidä tämä ikkuna auki äänen lisäämiseksi.Tämä johtuu selaimen yksityisyyden suojaa koskevasta vaatimuksesta.
+
+@app_description
+Lisää äänenvoimakkuutta jopa 6-kertaiseksi korkealaatuisella äänellä. 
+Edistyksellinen äänenvoimakkuuden tehostin videoille, podcasteille ja webinaareille millä tahansa verkkosivustolla.

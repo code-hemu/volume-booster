@@ -5,7 +5,7 @@ const API = (() => {
 })();
 
 const LINKS = {
-    "options": API.runtime.getURL("data/options/options.html"),
+    "options": API.runtime.getURL("data/offscreen/offscreen.html"),
     "support": API.runtime.getManifest().homepage_url,
     "review": `https://store.whale.naver.com/detail/${API.runtime.id}`,
     "facebook": "https://www.facebook.com/codehemu/",
@@ -17,6 +17,7 @@ const DEBOUNCE = (callback, delay) => {
   if (typeof callback !== "function") {
     return false;
   }
+
   let timer;
   return function(...args) {
     const context = this;
@@ -25,35 +26,4 @@ const DEBOUNCE = (callback, delay) => {
       callback.apply(context, args);
     }, delay);
   };
-};
-
-const $ = (selector) => {
-  if (typeof selector !== "string") {
-    console.error("Selector must be a string");
-    return null;
-  }
-  
-  if (typeof document === "undefined") {
-    console.error("DOM is not available (document is undefined)");
-    return null;
-  }
-
-  try {
-    const elements = document.querySelectorAll(selector);
-
-    if (elements.length === 0) {
-      console.warn(`No elements found for selector: ${selector}`);
-      return null;
-    }
-
-    return elements.length === 1 ? elements[0] : elements;
-  } catch (error) {
-    console.error(`Invalid selector: ${selector}`);
-    return null;
-  }
-};
-
-var NORMALIZE = (url) => {
-  const u = new URL(url);
-  return u.origin + u.pathname;
 };

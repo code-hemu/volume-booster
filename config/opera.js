@@ -9,18 +9,17 @@ export default {
                 'src/js/common.js'
             ],
             '/': ['src/js/background.js'],
-            'data/options': ['src/js/options.js'],
+            'data/offscreen': ['src/js/offscreen.js'],
             'data/interface': ['src/js/index.js','src/js/anime.js'],
         },
         
         filename: '[name]',
         target: 'es2020',
-        minify: false,
+        minify: true,
         sourcemap: false
     },
     scss: {
         entry:{ 
-            'data/options': ['src/scss/options.scss'],
             'data/interface': ['src/scss/style.scss']
         },
         filename: '[name]',
@@ -30,7 +29,7 @@ export default {
     html: {
         entry:{
             'data/interface': ['src/html/index.html'],
-            'data/options': ['src/html/options.html'],
+            'data/offscreen': ['src/html/offscreen.html'],
         },
         filename: '[name]'
     },
@@ -41,22 +40,7 @@ export default {
                 'src/assets/svg'
             ]
         }
-    },
-    "locales": [
-        "en", 
-        "es", 
-        "fa", 
-        "fi", 
-        "fr", 
-        "it", 
-        "ja",
-        "ko",
-        "ru",
-        "sv",
-        "sw",
-        "zh-CN",
-        "zh-TW"
-    ]
+    }
 };
 
 

@@ -51,7 +51,7 @@ function validateArguments(args) {
         '--log-info',
         '--log-warn',
         '--test',
-        '--version=',
+        '--version=*',
         '--help',
         '-h'
     ];

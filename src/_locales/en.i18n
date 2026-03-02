@@ -1,6 +1,3 @@
-@app_description
-Unleash sound power in your browser! Boost volume to the max and control it on any tab.
-
 @app_name
 Volume Booster - Increase sound
 
@@ -27,3 +24,9 @@ Volume
 
 @notice
 Please keep this window open to boost your sound. This is due to privacy requirement by the browser.
+
+@close
+close
+
+@app_description
+Boost volume up to 6X with high-quality sound. Advanced volume booster for videos, podcasts, webinars on any website.

@@ -1,6 +1,3 @@
-@app_description
-Desfer el poder del so al navegador.Augmenteu el volum al nivell màxim i controleu la pestanya.
-
 @app_name
 Volume Booster - Augmentar el so
 
@@ -21,3 +18,10 @@ Volum
 
 @notice
 Mantingueu aquesta finestra oberta per augmentar el so.Això es deu al requisit de privadesa del navegador.
+
+@close
+tancar
+
+@app_description
+Augmenta el volum fins a 6X amb un so d'alta qualitat. 
+Amplificador de volum avançat per a vídeos, podcasts, seminaris web a qualsevol lloc web.

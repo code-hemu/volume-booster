@@ -1,6 +1,3 @@
-@app_description
-Rhyddhewch bŵer sain ar eich porwr!Cynyddu cyfaint i'r lefel uchaf a rheolwch ef unrhyw dab.
-
 @app_name
 Volume Booster - Cynyddu sain
 
@@ -15,3 +12,10 @@ Nghyfrol
 
 @notice
 Cadwch y ffenestr hon ar agor i roi hwb i'ch sain.Mae hyn oherwydd gofyniad preifatrwydd gan y porwr.
+
+@close
+cau
+
+@app_description
+Rhowch hwb i gyfaint hyd at 6X gyda sain o ansawdd uchel. 
+Atgyfnerthu cyfaint uwch ar gyfer fideos, podlediadau, gweminarau ar unrhyw wefan.

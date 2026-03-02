@@ -1,6 +1,3 @@
-@app_description
-Slipp løs kraften i lyden i nettleseren din!Øk volumet til maks nivå og kontroller det for en hvilken som helst fan.
-
 @app_name
 Volume Booster - Øk lyden
 
@@ -24,3 +21,10 @@ Volum
 
 @notice
 Hold dette vinduet åpent for å øke lyden.Dette skyldes personvernkrav fra nettleseren.
+
+@close
+lukke
+
+@app_description
+Øk volumet opptil 6X med høykvalitetslyd. 
+Avansert volumforsterker for videoer, podcaster, webinarer på alle nettsider.

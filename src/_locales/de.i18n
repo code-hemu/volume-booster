@@ -1,6 +1,3 @@
-@app_description
-Entfesselt die Klangkraft auf Ihrem Browser!Erhöhen Sie das Volumen auf maximales Niveau und steuern Sie die IT eines beliebigen Registerkartens.
-
 @app_name
 Volume Booster - Klang erhöhen
 
@@ -21,3 +18,10 @@ Volumen
 
 @notice
 Bitte halten Sie dieses Fenster offen, um Ihren Sound zu steigern.Dies ist auf die Datenschutzanforderung durch den Browser zurückzuführen.
+
+@close
+schließen
+
+@app_description
+Steigern Sie die Lautstärke mit hochwertigem Klang um das bis zu Sechsfache. 
+Erweiterter Lautstärkeverstärker für Videos, Podcasts und Webinare auf jeder Website.

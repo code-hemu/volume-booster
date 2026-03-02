@@ -32,6 +32,7 @@ app.storage = {
   },
   "load": function (callback) {
     const keys = Object.keys(app.storage.local);
+    /*  */
     if (keys && keys.length) {
       if (callback) {
         callback("cache");
@@ -215,6 +216,15 @@ app.tab = {
     API.tabs.create(properties, function (tab) {
       if (callback) callback(tab);
     }); 
+  },
+  "on": {
+    "remove": function (callback) {
+      API.tabs.onRemoved.addListener(function (e) {
+        app.storage.load(function () {
+          callback(e);
+        }); 
+      });
+    }
   }
 };
 
@@ -237,60 +247,75 @@ app.page = {
           }
       }
   },
-  "send": function(id, data, callback) {
+  "send": function(id, data) {
       if (id) {
-        const options = {
-            "method": id,
-            "data": data ? data : {},
-            "path": "background-to-page"
-        };
-        const page = new Promise(((resolve) => {
-          API.tabs.query({
-            windowType: "normal"
-          }, (tabs => {
-            let row_tab = null;
-            for (let tab of tabs) {
-              if (tab.url === LINKS.options) {
-                row_tab = tab.id;
-                break;
-              }
-            }
-            resolve(row_tab);
-          }));
-        }));
-        page.then((id) => {
-          if (id){
-            API.tabs.sendMessage(id, options, app.error);
-            if (callback) callback(true);
-          } else{
-            app.tab.open(LINKS.options, null , false, true);
-          }
-        });
+        /*  */
+        API.runtime.sendMessage({
+          method: id,
+          data: data ?? {},
+          path: "background-to-page"
+        }, app.error);
       }
-  },
-  "reset": function(){
-    API.tabs.query({
-      windowType: "normal"
-    }, (tabs => {
-      for (let tab of tabs) {
-        if (tab.url === LINKS.options) {
-          API.tabs.remove(tab.id);
-        }
-      }
-      app.tab.open(LINKS.options, null , false, true);
-    }));
   }
 }
 
+app.offscreen = {
+  "path": LINKS.options,
+  "set": function (url){
+    try {
+      API.runtime.getContexts({
+        contextTypes: ['OFFSCREEN_DOCUMENT'],
+      }, (contexts)=>{
+        if (contexts.length === 0){
+          API.offscreen.createDocument({
+            url: url,
+            reasons: [API.offscreen.Reason.USER_MEDIA],
+            justification: "Recording from chrome.tabCapture API"
+          });
+        }
+      });
+    } catch(e){
+      console.error(e);
+    }
+  },
+  "create": function(url, callback) {
+    url = url ? url : app.offscreen.path;
+    /*  */
+    API.runtime.getContexts({
+        contextTypes: ['OFFSCREEN_DOCUMENT'],
+      }, (contexts)=>{
+        if (contexts.length === 0){
+        DEBOUNCE(app.offscreen.set(url), 1000);
+      } else {
+        if (callback) callback(true);
+      }
+    });
+  },
+  "close": function(url, callback) {
+    url = url ? url : app.offscreen.path;
+    /*  */
+    try {
+      API.runtime.getContexts({
+        contextTypes: ['OFFSCREEN_DOCUMENT'],
+        documentUrls: [url]
+      }, async (contexts) => {
+        if (contexts.length) {
+          /*  */
+          if(contexts[0].documentUrl == url){
+            console.log("Close offscreen document:" + url);
+            API.offscreen.closeDocument();
+            if (callback) callback(true);
+          }
+        }
+      });
+    }catch(e){
+      console.error(e);
+    }
+  }
+}     
 
 app.interface = {
     "path": API.runtime.getURL("data/interface/index.html"),
-    set id(e) {
-        app.storage.write("interface.id", e);
-    },
-    get id() {
-        return app.storage.read("interface.id") !== undefined ? app.storage.read("interface.id") : '';
-    },
     "create": function(url, callback) {
         app.window.query.current(function(win) {
             app.window.id = win.id;
@@ -309,8 +334,7 @@ app.interface = {
                 "type": "popup",
                 "height": height
             }, function(e) {
-                app.interface.id = e.id;
-                if (callback) callback(true);
+                if (callback) callback(e);
             });
         });
     }

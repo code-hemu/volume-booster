@@ -1,6 +1,3 @@
-@app_description
-Slip lyden af lyden på din browser!Forøg volumen til maks. Niveau og kontroller IT for enhver fane.
-
 @app_name
 Volume Booster - Forøg lyd
 
@@ -24,3 +21,10 @@ Bind
 
 @notice
 Hold dette vindue åbent for at øge din lyd.Dette skyldes krav om privatlivets fred i browseren.
+
+@close
+tæt
+
+@app_description
+Øg lydstyrken op til 6X med lyd i høj kvalitet. 
+Avanceret volumenforstærker til videoer, podcasts, webinarer på ethvert websted.

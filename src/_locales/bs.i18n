@@ -1,6 +1,3 @@
-@app_description
-Oslobodite snagu zvuka na vašem pretraživaču!Povećajte zapreminu na maksimalnu razinu i kontrolirajte ga bilo koje tab.
-
 @app_name
 Volume Booster - Povećati zvuk
 
@@ -21,3 +18,10 @@ Zapremina
 
 @notice
 Molimo vas da ovaj prozor otvorite da pojača zvuk.To je zbog zahtjeva privatnosti od strane pregledača.
+
+@close
+zatvori
+
+@app_description
+Pojačajte jačinu zvuka do 6X uz zvuk visokog kvaliteta. 
+Napredni pojačivač jačine zvuka za videozapise, podcaste, webinare na bilo kojoj web stranici.

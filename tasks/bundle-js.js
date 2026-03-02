@@ -25,7 +25,7 @@ async function esbuildJS(config, isDebug, platform){
             loader: {
                 '.js': 'js'
             },
-            minify: config.minify,
+            minify: !isDebug ? config.minify : false,
             sourcemap: config.sourcemap,
             drop: !isDebug ? ['console', 'debugger'] : [],
             metafile: true,

@@ -1,6 +1,3 @@
-@app_description
-Brauzeringizda ovozning kuchini oching!Ovoz balandligini oshiring va uni har qanday yorliqni boshqaring.
-
 @app_name
 Volume Booster - Ovozni oshiring
 
@@ -15,3 +12,10 @@ Hajmi
 
 @notice
 Iltimos, ushbu oynani baland ovozingizni ko'taring.Bu brauzer tomonidan maxfiylik talabi tufayli.
+
+@close
+yaqin
+
+@app_description
+Yuqori sifatli ovoz bilan ovoz balandligini 6 martagacha oshiring. 
+Har qanday veb-saytdagi videolar, podkastlar, vebinarlar uchun kengaytirilgan ovoz balandligini oshirish.

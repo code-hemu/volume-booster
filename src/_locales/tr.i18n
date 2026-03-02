@@ -1,6 +1,3 @@
-@app_description
-Tarayıcınızdaki sesin gücünü serbest bırakın!Ses seviyesini maksimum seviyeye çıkarın ve herhangi bir sekmenin IT'yi kontrol edin.
-
 @app_name
 Volume Booster - Sesi Artırmak
 
@@ -18,3 +15,10 @@ Hacim
 
 @notice
 Sesinizi artırmak için lütfen bu pencereyi açık tutun.Bunun nedeni tarayıcı tarafından gizlilik gereksinimidir.
+
+@close
+kapalı
+
+@app_description
+Yüksek kaliteli sesle ses seviyesini 6 kata kadar artırın. 
+Herhangi bir web sitesindeki videolar, podcast'ler ve web seminerleri için gelişmiş ses yükseltici.

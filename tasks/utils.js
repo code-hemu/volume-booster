@@ -1,8 +1,10 @@
 import {accessSync, existsSync} from 'node:fs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import https from 'node:https';
 import { pathToFileURL } from 'node:url';
 import {absolutePath} from './paths.js';
+
 
 const colors = Object.entries({
     gray: '\x1b[90m',
@@ -107,4 +109,26 @@ export async function fileExistsInConfig(config, absoluteFilePath) {
         }
     }
     return false;
+}
+
+export function timeout(delay) {
+    return new Promise((resolve) => setTimeout(resolve, delay));
+}
+
+export function httpsRequest(url) {
+    return new Promise((resolve) => {
+        const data = [];
+        https.get(url, (response) => {
+            response
+                .on('data', (chunk) => data.push(chunk))
+                .on('end', () => {
+                    const buffer = Buffer.concat(data);
+                    resolve({
+                        buffer: () => buffer,
+                        text: (encoding = 'utf8') => buffer.toString(encoding),
+                        type: () => response.headers['content-type'] || '',
+                    });
+                });
+        });
+    });
 }

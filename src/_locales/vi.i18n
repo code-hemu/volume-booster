@@ -1,6 +1,3 @@
-@app_description
-Giải phóng sức mạnh của âm thanh trên trình duyệt của bạn!Tăng khối lượng lên mức tối đa và kiểm soát nó của bất kỳ tab nào.
-
 @app_name
 Volume Booster - Tăng âm thanh
 
@@ -15,3 +12,10 @@ Không có tab nào có âm thanh ngay bây giờ
 
 @notice
 Vui lòng giữ cho cửa sổ này mở để tăng âm thanh của bạn.Điều này là do yêu cầu quyền riêng tư của trình duyệt.
+
+@close
+đóng
+
+@app_description
+Tăng âm lượng lên tới 6 lần với âm thanh chất lượng cao. 
+Tăng cường âm lượng nâng cao cho video, podcast, hội thảo trên web trên bất kỳ trang web nào.

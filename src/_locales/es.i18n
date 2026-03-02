@@ -1,6 +1,3 @@
-@app_description
-¡Bendir el poder del sonido en tu navegador!Aumente el volumen al nivel máximo y controle la TI de cualquier pestaña.
-
 @app_name
 Volume Booster - Aumentar el sonido
 
@@ -15,3 +12,10 @@ Volumen
 
 @notice
 Mantenga esta ventana abierta para aumentar su sonido.Esto se debe al requisito de privacidad por parte del navegador.
+
+@close
+cerca
+
+@app_description
+Aumente el volumen hasta 6 veces con sonido de alta calidad. 
+Amplificador de volumen avanzado para vídeos, podcasts y seminarios web en cualquier sitio web.

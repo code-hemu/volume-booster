@@ -1,6 +1,3 @@
-@app_description
-在瀏覽器上釋放聲音的力量！將音量增加到最大級別並控制任何選項卡的IT。
-
 @app_name
 Volume Booster - 增加聲音
 
@@ -27,3 +24,9 @@ Volume Booster - 增加聲音
 
 @notice
 請保持此窗口打開以增強您的聲音。這是由於瀏覽器的隱私要求。
+
+@close
+關閉
+
+@app_description
+將音量提升至 6 倍，提供高品質聲音。適用於任何網站上的影片、播客、網路研討會的高級音量增強器。

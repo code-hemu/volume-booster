@@ -1,6 +1,3 @@
-@app_description
-Libérez la puissance du son sur votre navigateur!Augmentez le volume au niveau maximum et contrôlez l'IT de n'importe quel onglet.
-
 @app_name
 Volume Booster - Augmenter le son
 
@@ -15,3 +12,10 @@ Volume
 
 @notice
 Veuillez garder cette fenêtre ouverte pour stimuler votre son.Cela est dû aux exigences de confidentialité par le navigateur.
+
+@close
+fermer
+
+@app_description
+Augmentez le volume jusqu'à 6X avec un son de haute qualité. 
+Booster de volume avancé pour les vidéos, podcasts et webinaires sur n'importe quel site Web.

@@ -1,6 +1,3 @@
-@app_description
-Losaðu hljóðið í vafranum þínum!Auka rúmmál að hámarki og stjórna upplýsingatækni sem er á hvaða flipa sem er.
-
 @app_name
 Volume Booster - Auka hljóð
 
@@ -18,3 +15,10 @@ Bindi
 
 @notice
 Vinsamlegast hafðu þennan glugga opinn til að auka hljóðið þitt.Þetta er vegna persónuverndarkröfu vafrans.
+
+@close
+loka
+
+@app_description
+Auktu hljóðstyrk allt að 6X með hágæða hljóði. 
+Háþróaður hljóðstyrkur fyrir myndbönd, podcast, vefnámskeið á hvaða vefsíðu sem er.

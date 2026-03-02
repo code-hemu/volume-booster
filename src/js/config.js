@@ -1,11 +1,11 @@
 var config = {};
+config.stream = {};
 
 config.welcome = {
   set lastupdate (val) {app.storage.write("lastupdate", val)},
   get lastupdate () {return app.storage.read("lastupdate") !== undefined ? app.storage.read("lastupdate") : 0}
 };
 
-config.popup = function() {return app.storage.read("popupMode") !== undefined ? true : app.storage.read("popupMode")};
 
 config.interface = {
   set size (val) {app.storage.write("interface.size", val)},

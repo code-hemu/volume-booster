@@ -1,6 +1,6 @@
 {
   "name": "volume-booster",
-  "version": "1.2.4",
+  "version": "1.2.6",
   "description": "Unleash the power of sound on your browser!",
   "homepage": "https://github.com/code-hemu/volume-booster#readme",
   "bugs": {
@@ -20,15 +20,18 @@
   },
   "scripts": {
     "build": "node --max-old-space-size=3072 tasks/cli.js build --all --release",
-    "chrome": "node --max-old-space-size=3072 tasks/cli.js build --chrome --release",
+    "release": "npm test && npm run lint && node tasks/cli.js build --all --release",
+    "release:chrome": "node --max-old-space-size=3072 tasks/cli.js build --chrome --release",
     "opera": "node --max-old-space-size=3072 tasks/cli.js build --opera --release",
     "never": "node --max-old-space-size=3072 tasks/cli.js build --naver --release",
     "edge": "node --max-old-space-size=3072 tasks/cli.js build --edge --release",
     "help": "node --max-old-space-size=3072 tasks/cli.js --help",
     "debug": "node --max-old-space-size=3072 tasks/cli.js build --all --debug",
+    "debug:chrome": "node --max-old-space-size=3072 tasks/cli.js build --chrome --debug",
     "watch": "node --max-old-space-size=3072 tasks/cli.js build --all --debug --watch",
     "zip": "node --max-old-space-size=3072 tasks/cli.js zip",
-    "chrome:watch": "node --max-old-space-size=3072 tasks/cli.js build --chrome --release --watch"
+    "chrome:watch": "node --max-old-space-size=3072 tasks/cli.js build --chrome --release --watch",
+    "locales": "node --max-old-space-size=3072 tasks/translate.js"
   },
   "devDependencies": {
     "@craftamap/esbuild-plugin-html": "^0.9.0",

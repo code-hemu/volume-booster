@@ -17,20 +17,28 @@ async function writeFiles(data, fileName, {platform, isDebug}){
 async function localeFileToJson(filePath) {
     let isfile = await readFile(filePath);
     let file = isfile.replace(/^#.*?$/gm, '');
-    
-    const messages = {};
 
+    const messages = {};
     const regex = /@([a-z0-9_]+)/ig;
     let match;
+
     while ((match = regex.exec(file))) {
         const messageName = match[1];
         const messageStart = match.index + match[0].length;
         let messageEnd = file.indexOf('@', messageStart);
+
         if (messageEnd < 0) {
             messageEnd = file.length;
         }
+
+        let messageContent = file
+            .substring(messageStart, messageEnd)
+            .replace(/\n/g, ' ')      // remove line breaks
+            .replace(/\s+/g, ' ')     // normalize extra spaces
+            .trim();
+
         messages[messageName] = {
-            message: file.substring(messageStart, messageEnd).trim(),
+            message: messageContent,
         };
     }
 
