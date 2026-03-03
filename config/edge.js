@@ -15,7 +15,7 @@ export default {
         
         filename: '[name]',
         target: 'es2020',
-        minify: false,
+        minify: true,
         sourcemap: false
     },
     scss: {

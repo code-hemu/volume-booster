@@ -5,7 +5,7 @@ const API = (() => {
 })();
 
 const LINKS = {
-    "options": API.runtime.getURL("data/options/options.html"),
+    "options": API.runtime.getURL("data/offscreen/offscreen.html"),
     "support": API.runtime.getManifest().homepage_url,
     "review": `https://microsoftedge.microsoft.com/addons/detail/${API.runtime.id}`,
     "facebook": "https://www.facebook.com/codehemu/",
