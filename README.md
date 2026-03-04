@@ -8,9 +8,9 @@ Volume Booster - Increase sound
 
 | Browser   | Install from ... | Status |
 | :-------: | ---------------- | ------ |
-| <img src="https://github.com/user-attachments/assets/3a7569f8-688b-4eb1-a643-8d0fe173aefe" alt="Get Volume Booster for Microsoft Edge"> | <a href="https://microsoftedge.microsoft.com/addons/detail/volume-booster-increase/pffabmlpcninlchjceeoijeedblbhcdl">Edge Add-ons</a> |
-| <img src="https://upload.wikimedia.org/wikipedia/commons/archive/4/49/20170311034503%21Opera_2015_icon.svg" height="50" alt="Get Volume Booster for Opera"> | <a href="https://addons.opera.com/en/extensions/details/volume-booster-increase-sound/">Opera Add-ons</a> |
-| <img src="https://github.com/user-attachments/assets/5463ef88-873b-4516-8514-5277664cfde7" alt="Get Volume Booster for Chromium"> | <a href="https://chromewebstore.google.com/detail/volume-booster-increase-s/gkfjamnmcjpbphincgfnagopcddfeakd">Chrome Web Store</a>
+| <img src="https://github.com/user-attachments/assets/3a7569f8-688b-4eb1-a643-8d0fe173aefe" alt="Get Volume Booster for Microsoft Edge"> | <a href="https://microsoftedge.microsoft.com/addons/detail/volume-booster-increase/pffabmlpcninlchjceeoijeedblbhcdl">Edge Add-ons</a> | Stable & Development Versions Available
+| <img src="https://upload.wikimedia.org/wikipedia/commons/archive/4/49/20170311034503%21Opera_2015_icon.svg" height="50" alt="Get Volume Booster for Opera"> | <a href="https://addons.opera.com/en/extensions/details/volume-booster-increase-sound/">Opera Add-ons</a> | Available
+| <img src="https://github.com/user-attachments/assets/5463ef88-873b-4516-8514-5277664cfde7" alt="Get Volume Booster for Chromium"> | <a href="https://chromewebstore.google.com/detail/volume-booster-increase-s/gkfjamnmcjpbphincgfnagopcddfeakd">Chrome Web Store</a> | Available
 | <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/GitHub_Invertocat_Logo.svg" height="50" alt="Get Volume Booster through GitHub"> | <a href="https://github.com/code-hemu/volume-booster/releases">GitHub - Releases</a> | Stable and development versions on Chromium MV3, Micreosoft Edge, Opera, and NAVER Whale. You have to extract it from the zip and install it manually in the web browser.
 
 
