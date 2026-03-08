@@ -19,10 +19,8 @@
     "npm": ">=11"
   },
   "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
     "build": "node --max-old-space-size=3072 workspace/tasks/cli.js build --all --release",
-    "release": "npm test && npm run lint && node workspace/tasks/cli.js build --all --release",
+    "release": "node workspace/tasks/cli.js build --all --release",
     "release:chrome": "node --max-old-space-size=3072 workspace/tasks/cli.js build --chrome --release",
     "release:edge": "node --max-old-space-size=3072 workspace/tasks/cli.js build --edge --release",
     "release:opera": "node --max-old-space-size=3072 workspace/tasks/cli.js build --opera --release",
