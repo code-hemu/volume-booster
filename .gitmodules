@@ -1,6 +1,0 @@
-[submodule "tasks"]
-	path = tasks
-	url = https://github.com/code-hemu/extensions-workspace.git
-[submodule "workspace"]
-	path = workspace
-	url = https://github.com/code-hemu/extensions-workspace.git
