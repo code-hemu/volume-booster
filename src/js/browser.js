@@ -1,4 +1,4 @@
-var app = {};
+const app = {};
 
 app.error = function () {
   return API.runtime.lastError;
@@ -20,7 +20,7 @@ app.storage = {
     });
   },
   "write": function (id, data, callback) {
-    let tmp = {};
+    const tmp = {};
     tmp[id] = data;
     app.storage.local[id] = data;
     /*  */
@@ -201,7 +201,7 @@ app.tab = {
     }
   },
   "open": function (url, index, active, pinned, callback) {
-    let properties = {
+    const properties = {
       "url": url, 
       "active": active !== undefined ? active : true,
       "pinned": active !== undefined ? pinned : false

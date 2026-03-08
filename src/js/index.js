@@ -47,7 +47,7 @@ const $ = (selector) => {
     }
 
     return elements.length === 1 ? elements[0] : elements;
-  } catch (error) {
+  } catch {
     console.error(`Invalid selector: ${selector}`);
     return null;
   }
@@ -119,7 +119,7 @@ var app = {
       });
     },
     "remove": function() {
-      let allTab = document.querySelectorAll("a.tab");
+      const allTab = document.querySelectorAll("a.tab");
       if (allTab) {
         for(element of allTab){
           const parentElement = element.parentNode; 
@@ -244,7 +244,7 @@ var app = {
     },
     "listener": function (e) {
       if (e) {
-        for (let id in app.background.message) {
+        for (const id in app.background.message) {
           if (app.background.message[id]) {
             if ((typeof app.background.message[id]) === "function") {
               if (e.path === "background-to-popup") {

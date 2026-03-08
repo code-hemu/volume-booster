@@ -5,7 +5,7 @@ const API = (() => {
 })();
 
 const background = (function() {
-    let tmp = {};
+    const tmp = {};
 
     API.runtime.onMessage.addListener(function(request) {
         if (request.path === "background-to-page") {
@@ -34,7 +34,7 @@ const background = (function() {
     };
 })();
 
-var offscreen = {}; offscreen.audioStates = {};
+const offscreen = {}; offscreen.audioStates = {};
 
 offscreen.volume = {
     "set": async function(data) {

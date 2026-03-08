@@ -8,8 +8,8 @@ if (!navigator.webdriver) {
         app.on.management(function(result) {
             if (result.installType === "normal") {
                 app.tab.query.index(function(index) {
-                    let previous = e.previousVersion !== undefined && e.previousVersion !== app.version();
-                    let doupdate = previous && parseInt((Date.now() - config.welcome.lastupdate) / (24 * 3600 * 1000)) > 45;
+                    const previous = e.previousVersion !== undefined && e.previousVersion !== app.version();
+                    const doupdate = previous && parseInt((Date.now() - config.welcome.lastupdate) / (24 * 3600 * 1000)) > 45;
                     if (e.reason === "install" || (e.reason === "update" && doupdate)) {
                         app.tab.open(LINKS.support, index, e.reason === "install");
                         config.welcome.lastupdate = Date.now();
@@ -23,7 +23,7 @@ if (!navigator.webdriver) {
 app.on.message(function(request, sender) {
     if (request) {
         if (request.path === "popup-to-background") {
-            for (let id in app.popup.message) {
+            for (const id in app.popup.message) {
                 if (app.popup.message[id]) {
                     if ((typeof app.popup.message[id]) === "function") {
                         if (id === request.method) {
@@ -35,11 +35,11 @@ app.on.message(function(request, sender) {
         }
         /*  */
         if (request.path === "page-to-background") {
-            for (let id in app.page.message) {
+            for (const id in app.page.message) {
                 if (app.page.message[id]) {
                     if ((typeof app.page.message[id]) === "function") {
                         if (id === request.method) {
-                            let a = request.data || {};
+                            const a = request.data || {};
                             if (sender) {
                                 a.frameId = sender.frameId;
                                 /*  */
@@ -86,7 +86,7 @@ app.on.connect(function(port) {
                         if (e.port) {
                             if (e.port in app) {
                                 if (e.path === (e.port + "-to-background")) {
-                                    for (let id in app[e.port].message) {
+                                    for (const id in app[e.port].message) {
                                         if (app[e.port].message[id]) {
                                             if ((typeof app[e.port].message[id]) === "function") {
                                                 if (id === e.method) {

@@ -19,7 +19,9 @@
     "npm": ">=11"
   },
   "scripts": {
-    "build": "node --max-old-space-size=3072 tasks/cli.js build --all --release",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "build": "node --max-old-space-size=3072 tasks/cli.js build --chrome --edge --release",
     "release": "npm test && npm run lint && node tasks/cli.js build --all --release",
     "release:chrome": "node --max-old-space-size=3072 tasks/cli.js build --chrome --release",
     "release:edge": "node --max-old-space-size=3072 tasks/cli.js build --edge --release",
@@ -39,8 +41,9 @@
     "chokidar": "^5.0.0",
     "esbuild": "^0.27.3",
     "esbuild-sass-plugin": "^3.6.0",
+    "globals": "^17.4.0",
     "globby": "^16.1.0",
-    "yazl": "^3.3.1",
-    "sass": "^1.97.3"
+    "sass": "^1.97.3",
+    "yazl": "^3.3.1"
   }
 }

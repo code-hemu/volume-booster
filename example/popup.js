@@ -1,5 +1,5 @@
 const API = chrome || browser;
-var gainNode = null;
+let gainNode = null;
 
 const mediaSource = (id) => {
   return new Promise((resolve, reject) => {
@@ -17,8 +17,8 @@ const mediaSource = (id) => {
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const slider = document.getElementById('volume');
-  const level = document.getElementById('level');
+  const slider = document.querySelector('#volume');
+  const level = document.querySelector('#level');
 
   const consumerId = (await API.tabs.getCurrent())?.id;
    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });

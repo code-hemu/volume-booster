@@ -118,13 +118,13 @@ class SpeakerAnimation {
 
     getScalePoint(obj = {}, onScene = true) {
         if (!onScene) {
-            let svgRect = obj.getBBox();
+            const svgRect = obj.getBBox();
             return {
                 x: svgRect.x + svgRect.width / 2,
                 y: svgRect.y + svgRect.height / 2
             }
         }
-        let rect = obj.getBoundingClientRect();
+        const rect = obj.getBoundingClientRect();
         return {
             x: rect.width / 2,
             y: rect.height / 2
@@ -132,9 +132,9 @@ class SpeakerAnimation {
     }
 
     animation() {
-        var fromTo = (from, to, prgrs = 0) => from + (to - from) * prgrs;
+        const fromTo = (from, to, prgrs = 0) => from + (to - from) * prgrs;
 
-        var volObj = {
+        const volObj = {
             speakB: this.qs("#speakB"),
             arcBigB: this.qs("#arcBigB"),
             arcSmB: this.qs("#arcSmB"),
@@ -147,13 +147,13 @@ class SpeakerAnimation {
             crossLbRt: this.qs("#crossLbRt")
         };
 
-        var pathLen = {
+        const pathLen = {
             arcBigLen: volObj.arcBigF.getTotalLength(),
             arcSmLen: volObj.arcSmF.getTotalLength(),
             speakLen: volObj.speakF.getTotalLength()
         };
 
-        var transforms = {
+        const transforms = {
             translate3D: function (x = 0, y = 0, z = 0, el = "px") {
                 return `translate3D(${x}${el}, ${y}${el}, ${z}${el})`;
             },
@@ -179,27 +179,27 @@ class SpeakerAnimation {
             }
         };
 
-        var easing = {
+        const easing = {
             inCubic: function (t, b, c, d) {
-                var ts = (t /= d) * t;
-                var tc = ts * t;
+                const ts = (t /= d) * t;
+                const tc = ts * t;
                 return b + c * (1.7 * tc * ts - 2.05 * ts * ts + 1.5 * tc - 0.2 * ts + 0.05 * t);
             },
 
             outElastic: function (t, b, c, d) {
-                var ts = (t /= d) * t;
-                var tc = ts * t;
+                const ts = (t /= d) * t;
+                const tc = ts * t;
                 return b + c * (33 * tc * ts + -106 * ts * ts + 126 * tc + -67 * ts + 15 * t);
             },
 
             customSin: function (t, b, c, d) {
-                var ts = (t /= d) * t;
-                var tc = ts * t;
+                const ts = (t /= d) * t;
+                const tc = ts * t;
                 return b + c * (81 * tc * ts + -210 * ts * ts + 190 * tc + -70 * ts + 10 * t);
             }
         };
 
-        let drag = {
+        const drag = {
             dx: 0,
             maxX: 600,
             minX: 0,
@@ -214,19 +214,19 @@ class SpeakerAnimation {
                 this.curCx += this.dx;
                 let cx = this.curCx;
 
-                let smLen = pathLen.arcSmLen;
-                let bgLen = pathLen.arcBigLen;
+                const smLen = pathLen.arcSmLen;
+                const bgLen = pathLen.arcBigLen;
 
                 if (cx > this.maxX) { cx = this.maxX; }
                 if (cx < this.minX) { cx = this.minX; }
 
-                let progress = (cx - this.minX) / (this.maxX - this.minX);
+                const progress = (cx - this.minX) / (this.maxX - this.minX);
                 play.curPos = progress;
 
 
-                let scaleFactor = fromTo(1, 0.85, 1 - progress);
-                let scaleDxBig = fromTo(0, -3, 1 - progress);
-                let scaleDxSm = fromTo(0, -1, 1 - progress);
+                const scaleFactor = fromTo(1, 0.85, 1 - progress);
+                const scaleDxBig = fromTo(0, -3, 1 - progress);
+                const scaleDxSm = fromTo(0, -1, 1 - progress);
 
                 [volObj.arcBigF, volObj.arcBigB].forEach((el) => {
                     play.curPosBig.x = -this.pointBig.x * (scaleFactor - 1) + scaleDxBig;
@@ -250,7 +250,7 @@ class SpeakerAnimation {
 
                 if (progress > 0.5) {
                     if (play.off) { play.onRefresh(); }
-                    let prgForBig = fromTo(1, -1, 1 - progress);
+                    const prgForBig = fromTo(1, -1, 1 - progress);
                     volObj.arcBigF.setAttribute("visibility", "visible");
                     volObj.arcSmF.setAttribute("visibility", "visible");
                     volObj.arcBigF.setAttribute("stroke-dasharray", bgLen * prgForBig + "," + bgLen * 1.05);
@@ -261,7 +261,7 @@ class SpeakerAnimation {
 
                 if (progress <= 0.5 && progress > 0) {
                     if (play.off) { play.onRefresh(); }
-                    let prgForSm = fromTo(1, 0, 1 - progress * 2);
+                    const prgForSm = fromTo(1, 0, 1 - progress * 2);
                     volObj.arcBigF.setAttribute("visibility", "hidden");
                     volObj.arcSmF.setAttribute("visibility", "visible");
                     volObj.arcSmF.setAttribute("stroke-dasharray", smLen * prgForSm + "," + smLen * 1.05);
@@ -327,14 +327,14 @@ class SpeakerAnimation {
                     el.setAttribute("visibility", "visible");
                 });
 
-                let len = pathLen.speakLen;
-                let step1 = 20;
-                let step2 = this.offMaxStep - step1;
-                let backLen = 0.7;
+                const len = pathLen.speakLen;
+                const step1 = 20;
+                const step2 = this.offMaxStep - step1;
+                const backLen = 0.7;
 
                 if (this.offCurStep >= this.offMaxStep - step1) {
-                    let progress = (step1 + this.offCurStep - this.offMaxStep) / step1;
-                    let progressB = fromTo(1, backLen, 1 - progress);
+                    const progress = (step1 + this.offCurStep - this.offMaxStep) / step1;
+                    const progressB = fromTo(1, backLen, 1 - progress);
                     volObj.speakF.setAttribute("stroke-dasharray", len * progress + "," + len * 1.05);
                     volObj.speakF.setAttribute("stroke-dashoffset", -len * (1 - progress) / 2 + "");
                     volObj.speakB.setAttribute("stroke-dasharray", len * progressB + "," + len * 1.05);
@@ -342,25 +342,25 @@ class SpeakerAnimation {
                 }
 
                 if (this.offCurStep < step2 && this.offCurStep >= step2 - step1) {
-                    let progress = 1 - (this.offCurStep - step2 + step1) / step1;
-                    let progressB = fromTo(backLen, 1, progress);
+                    const progress = 1 - (this.offCurStep - step2 + step1) / step1;
+                    const progressB = fromTo(backLen, 1, progress);
                     volObj.speakB.setAttribute("stroke-dasharray", len * progressB + "," + len * 1.05);
                     volObj.speakB.setAttribute("stroke-dashoffset", -len * (1 - progressB) / 2 + "");
                 }
 
                 if (this.offCurStep < step2 && this.offCurStep >= 0) {
                     volObj.speakF.setAttribute("visibility", "hidden");
-                    let progress = this.offCurStep / step2;
+                    const progress = this.offCurStep / step2;
                     [volObj.crossLbRt, volObj.crossLtRb].forEach((el, index) => {
-                        let scale = easing.outElastic(1 - progress, 0, 1, 1);
-                        let dx = index == 0 ?
+                        const scale = easing.outElastic(1 - progress, 0, 1, 1);
+                        const dx = index == 0 ?
                         easing.customSin(1 - progress, -3, 3, 1) :
                         easing.customSin(1 - progress, -2, 2, 1);
-                        let dy = index == 0 ?
+                        const dy = index == 0 ?
                         easing.customSin(1 - progress, -2, 2, 1) :
                         easing.customSin(1 - progress, 2, -2, 1);
-                        let x = -this.pointLbRt.x * (scale - 1) + dx;
-                        let y = -this.pointLbRt.y * (scale - 1) + dy;
+                        const x = -this.pointLbRt.x * (scale - 1) + dx;
+                        const y = -this.pointLbRt.y * (scale - 1) + dy;
                         el.setAttribute("transform",
                         transforms.translate(x, y, "") +
                         transforms.scale(scale, scale));
@@ -378,8 +378,8 @@ class SpeakerAnimation {
                         el.setAttribute("visibility", "hidden");
                         el.setAttribute("transform", "scale(0)");
                     });
-                    let len = pathLen.speakLen;
-                    let progress = this.onCurStep / this.onMaxStep;
+                    const len = pathLen.speakLen;
+                    const progress = this.onCurStep / this.onMaxStep;
                     volObj.speakF.setAttribute("stroke-dasharray", len * progress + "," + len * 1.05);
                     volObj.speakF.setAttribute("stroke-dashoffset", -len * (1 - progress) / 2 + "");
                     this.onCurStep += this.onSpeed;
@@ -390,7 +390,7 @@ class SpeakerAnimation {
                     this.flag = !this.flag;
                     this.step = 0;
                 }
-                let progress = this.step / this.speed;
+                const progress = this.step / this.speed;
                 let amplitudeB = 1 - easing.inCubic(1 - this.curPos, 0, 1, 0.5);
                 let amplitudeS = 1 - easing.inCubic(1 - this.curPos, 0, 1, 1);
 
@@ -410,8 +410,8 @@ class SpeakerAnimation {
                 }
 
                 [volObj.arcBigF, volObj.arcBigB].forEach((el) => {
-                    let scale = this.curPosBig.scale + sclFactB * amplitudeB;
-                    let y = -drag.pointBig.y * (scale - 1) * 1.5;
+                    const scale = this.curPosBig.scale + sclFactB * amplitudeB;
+                    const y = -drag.pointBig.y * (scale - 1) * 1.5;
                     el.setAttribute("transform",
                         transforms.translate(this.curPosBig.x + dxBig * amplitudeB, y, "")
                         + transforms.scale(scale, scale)
@@ -419,8 +419,8 @@ class SpeakerAnimation {
                 });
 
                 [volObj.arcSmF, volObj.arcSmB].forEach((el) => {
-                    let scale = this.curPosSm.scale + sclFactSm * amplitudeS;
-                    let y = -drag.pointSm.y * (scale - 1) * 3;
+                    const scale = this.curPosSm.scale + sclFactSm * amplitudeS;
+                    const y = -drag.pointSm.y * (scale - 1) * 3;
                     el.setAttribute("transform",
                         transforms.translate(this.curPosSm.x + dxSm * amplitudeS, y, "")
                         + transforms.scale(scale, scale)
