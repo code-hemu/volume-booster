@@ -27,7 +27,6 @@
         "tabs",
         "tabCapture",
         "storage",
-        "windows",
         "offscreen"],
    "short_name": "volume",
    "version": "1.0.0",
