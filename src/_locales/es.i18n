@@ -10,15 +10,19 @@ No hay pestañas con audio en este momento
 @volume
 Volumen
 
-@notice
-Mantenga esta ventana abierta para aumentar su sonido.Esto se debe al requisito de privacidad por parte del navegador.
-
 @close
 cerca
 
-@app_description
-Aumente el volumen hasta 6 veces con sonido de alta calidad. 
-Amplificador de volumen avanzado para vídeos, podcasts y seminarios web en cualquier sitio web.
-
 @short_description
 Aumente el volumen hasta un 600 % y controle el sonido en cualquier pestaña: presione Ctrl + Shift + V para abrir.
+
+@mid
+Voz
+
+@app_description
+¡El amplificador de volumen aumenta el volumen en cualquier pestaña! 
+Amplificador de graves y control de ecualizador en tu navegador.
+
+@notice
+Un volumen alto puede dañar los parlantes o el oído. 
+Úselo con cuidado.

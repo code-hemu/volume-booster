@@ -19,15 +19,19 @@ mørk
 @volume
 Volum
 
-@notice
-Hold dette vinduet åpent for å øke lyden.Dette skyldes personvernkrav fra nettleseren.
-
 @close
 lukke
 
-@app_description
-Øk volumet opptil 6X med høykvalitetslyd. 
-Avansert volumforsterker for videoer, podcaster, webinarer på alle nettsider.
-
 @short_description
 Øk volumet med opptil 600 % og kontroller lyden på hvilken som helst fane – trykk Ctrl + Shift + V for å åpne.
+
+@mid
+Stemme
+
+@app_description
+Volumforsterker øke volumet på hvilken som helst fane! 
+Bassforsterker og EQ-kontroll i nettleseren din.
+
+@notice
+Høyt volum kan skade høyttalerne eller hørselen. 
+Vennligst bruk forsiktig.

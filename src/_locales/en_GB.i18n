@@ -22,14 +22,23 @@ dark
 @volume
 Volume
 
-@notice
-Please keep this window open to boost your sound. This is due to privacy requirement by the browser.
+@bass
+Bass
 
 @close
 close
 
-@app_description
-Boost volume up to 6X with high-quality sound. Advanced volume booster for videos, podcasts, webinars on any website.
-
 @short_description
 Boost volume up to 600% and control sound on any tab — press Ctrl + Shift + V to open.
+
+@mid
+Voice
+
+@treble
+Cymbals
+
+@app_description
+Volume booster increase volume on any tab! Bass booster and EQ control in your browser.
+
+@notice
+High volume can harm your speakers or hearing. Please use carefully.

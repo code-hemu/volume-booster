@@ -22,14 +22,23 @@ Volume Booster - 增加聲音
 @volume
 體積
 
-@notice
-請保持此窗口打開以增強您的聲音。這是由於瀏覽器的隱私要求。
+@bass
+低音
 
 @close
 關閉
 
-@app_description
-將音量提升至 6 倍，提供高品質聲音。適用於任何網站上的影片、播客、網路研討會的高級音量增強器。
-
 @short_description
 將音量提高至 600% 並控制任何標籤上的聲音 - 按 Ctrl + Shift + V 開啟。
+
+@mid
+嗓音
+
+@treble
+鈸
+
+@app_description
+音量增強器可增加任何選項卡上的音量！瀏覽器中的低音增強器和均衡器控制。
+
+@notice
+高音量可能會損害您的揚聲器或聽力。請謹慎使用。

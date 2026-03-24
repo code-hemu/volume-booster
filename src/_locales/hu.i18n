@@ -13,15 +13,19 @@ fény
 @volume
 Kötet
 
-@notice
-Kérjük, tartsa nyitva ezt az ablakot, hogy növelje a hangját.Ennek oka a böngésző adatvédelmi követelménye.
-
 @close
 közeli
 
-@app_description
-Növelje a hangerőt akár 6-szorosra kiváló minőségű hanggal. 
-Fejlett hangerőnövelő videókhoz, podcastokhoz, webináriumokhoz bármely webhelyen.
-
 @short_description
 Növelje a hangerőt akár 600%-ra, és szabályozza a hangot bármelyik lapon – nyomja meg a Ctrl + Shift + V billentyűket a megnyitáshoz.
+
+@mid
+Hang
+
+@app_description
+Hangerőnövelő növeli a hangerőt bármelyik lapon! 
+Basszus erősítő és EQ vezérlés a böngészőben.
+
+@notice
+A nagy hangerő károsíthatja a hangszórókat vagy a hallást. 
+Kérjük, óvatosan használja.

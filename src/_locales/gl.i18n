@@ -13,15 +13,19 @@ Luz
 @volume
 Volume
 
-@notice
-Manteña esta xanela aberta para aumentar o son.Isto débese ao requisito de privacidade do navegador.
-
 @close
 pechar
 
-@app_description
-Aumenta o volume ata 6X cun son de alta calidade. 
-Amplificador de volume avanzado para vídeos, podcasts, seminarios web en calquera sitio web.
-
 @short_description
 Aumenta o volume ata un 600 % e controla o son en calquera pestana: preme Ctrl + Maiús + V para abrir.
+
+@mid
+Voz
+
+@app_description
+Amplificador de volume aumenta o volume en calquera pestana! 
+Amplificador de graves e control de ecualización no teu navegador.
+
+@notice
+O volume alto pode danar os teus altofalantes ou a audición. 
+Use con coidado.

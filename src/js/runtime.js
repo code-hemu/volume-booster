@@ -1,5 +1,5 @@
 app.version = function () {
-    return chrome.runtime.getManifest().version;
+    return API.runtime.getManifest().version;
 };
 
 if (!navigator.webdriver) {

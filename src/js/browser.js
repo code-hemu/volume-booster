@@ -270,7 +270,7 @@ app.offscreen = {
           API.offscreen.createDocument({
             url: url,
             reasons: [API.offscreen.Reason.USER_MEDIA],
-            justification: "Recording from chrome.tabCapture API"
+            justification: "Recording from tabCapture API"
           });
         }
       });

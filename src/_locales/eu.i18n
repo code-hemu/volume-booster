@@ -16,15 +16,19 @@ ilun
 @volume
 Ozentasun
 
-@notice
-Mesedez, mantendu leiho hau irekita zure soinua hobetzeko.Hau arakatzaileak pribatutasun eskakizuna da.
-
 @close
 itxi
 
-@app_description
-Igotu bolumena 6 aldiz arte kalitate handiko soinuarekin. 
-Bideoetarako, podcastetarako, webinarretarako bolumen-multzo aurreratua edozein webgunetan.
-
 @short_description
 Igotu bolumena % 600ra arte eta kontrolatu soinua edozein fitxatan - sakatu Ctrl + Shift + V irekitzeko.
+
+@mid
+Ahotsa
+
+@app_description
+Bolumena areagotzeko bolumena handitu edozein fitxatan! 
+Bass booster eta EQ kontrola zure arakatzailean.
+
+@notice
+Bolumen handiak bozgorailuei edo entzumena kaltetu diezaieke. 
+Mesedez, erabili arretaz.

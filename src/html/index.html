@@ -47,19 +47,31 @@
     </div>
 
     <div class="controlls">
-      <div class="speaker" id="speaker"></div>
+      <div class="speaker">
+        <div id="volume"></div>
+        <div id="others">
+          <img src="../icons/drum.svg"/>
+        </div>
+      </div>
       <section class="slider">
-        <input class="volume-slider" type="range" autofocus value="100" min="0" max="600" step="1" autofocus="">
+        <input class="volume-slider" type="range" autofocus step="1" autofocus="">
       </section>
     </div>
 
     <section class="info">
-      <span class="volume-min">0 %</span>
+      <span class="volume-min"></span>
       <span class="volume-current">
-        <span class="volume-name" data-message="volume"></span>
+        <button class="left-arrow">
+          <img src="../icons/arrow-left.svg"/>
+        </button>
+        <span class="volume-name"></span>
         <span>: </span> 
-        <span class="volume-current-value">100</span> %</span>
-      <span class="volume-max"><span class="volume-max-value">600</span> %</span>
+        <span class="volume-current-value">100</span><span class="units"> %</span>
+        <button class="right-arrow">
+          <img src="../icons/arrow-right.svg"/>
+        </button>
+      </span>
+      <span class="volume-max">600 %</span>
     </section>
 
     <section class="volume-info"></section>

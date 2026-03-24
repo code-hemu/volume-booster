@@ -1,6 +1,6 @@
 {
   "name": "volume-booster",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "Unleash the power of sound on your browser!",
   "homepage": "https://github.com/code-hemu/volume-booster#readme",
   "bugs": {
@@ -32,7 +32,7 @@
     "watch": "node --max-old-space-size=3072 workspace/tasks/cli.js build --all --debug --watch",
     "zip": "node --max-old-space-size=3072 workspace/tasks/cli.js zip",
     "chrome:watch": "node --max-old-space-size=3072 workspace/tasks/cli.js build --chrome --release --watch",
-    "locales": "node --max-old-space-size=3072 tasks/translate.js"
+    "locales": "node --max-old-space-size=3072 workspace/tools/translate.js"
   },
   "devDependencies": {
     "@craftamap/esbuild-plugin-html": "^0.9.0",
