@@ -15,6 +15,39 @@ Volume Booster - Increase sound
 | <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/GitHub_Invertocat_Logo.svg" height="50" alt="Get Volume Booster through GitHub"> | <a href="https://github.com/code-hemu/volume-booster/releases">GitHub - Releases</a> | Stable and development versions on Chromium MV3, Micreosoft Edge, Opera, and NAVER Whale. You have to extract it from the zip and install it manually in the web browser.
 
 
+## 🔧 Manual Install (Chrome / Edge / Brave)
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/code-hemu/klak-newtab.git
+   cd klak-newtab
+
+2. Install dependencies and build:
+   ```bash
+   npm install
+   npm run build
+   
+The output will be generated in a build/ folder.
+
+## 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repo
+
+2. Create your branch:
+   ```bash
+   git checkout -b feature/your-feature
+   
+3. Commit changes:
+   ```bash   
+   git commit -m "Add your feature"
+   
+4. Push and open a PR 🚀
+
+## ⭐ Support
+If you like [this project](https://github.com/code-hemu/volume-booster), give it a ⭐ on GitHub!
+
+
 
 
 
