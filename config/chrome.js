@@ -18,9 +18,9 @@ export default {
         minify: true,
         sourcemap: false
     },
-    scss: {
+    css: {
         entry:{ 
-            'data/interface': ['src/scss/style.scss']
+            'data/interface': ['src/css/style.css']
         },
         filename: '[name]',
         minify: false,
@@ -31,6 +31,7 @@ export default {
             'data/interface': ['src/html/index.html'],
             'data/offscreen': ['src/html/offscreen.html'],
         },
+        minify: false,
         filename: '[name]'
     },
     assets:{

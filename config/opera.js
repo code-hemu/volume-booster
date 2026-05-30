@@ -18,9 +18,9 @@ export default {
         minify: false,
         sourcemap: false
     },
-    scss: {
+    css: {
         entry:{ 
-            'data/interface': ['src/scss/style.scss']
+            'data/interface': ['src/css/style.css']
         },
         filename: '[name]',
         minify: false,

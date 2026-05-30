@@ -315,7 +315,13 @@ app.offscreen = {
 }     
 
 app.interface = {
-    "path": API.runtime.getURL("data/interface/index.html"),
+    "path": chrome.runtime.getURL("data/interface/index.html"),
+    set id(e) {
+        app.storage.write("interface.id", e);
+    },
+    get id() {
+        return app.storage.read("interface.id") !== undefined ? app.storage.read("interface.id") : '';
+    },
     "create": function(url, callback) {
         app.window.query.current(function(win) {
             app.window.id = win.id;
@@ -334,7 +340,8 @@ app.interface = {
                 "type": "popup",
                 "height": height
             }, function(e) {
-                if (callback) callback(e);
+                app.interface.id = e.id;
+                if (callback) callback(true);
             });
         });
     }
